@@ -125,3 +125,59 @@ view, text {
     background: rgba(255, 255, 255, 0.4);
   }
 }
+
+// ============================================
+// 深色模式覆盖
+// ============================================
+.app[data-mode='night'] {
+  // 弹窗
+  .modal-overlay { background: rgba(0, 0, 0, 0.6); }
+  .modal-sheet { background: #2a2a3a; }
+
+  .modal-sheet__title,
+  .modal-sheet__content,
+  .modal-sheet__reply-content { color: #d0d0e0; }
+
+  .modal-sheet__author,
+  .modal-sheet__time,
+  .modal-sheet__close,
+  .modal-sheet__reply-author,
+  .modal-sheet__reply-time { color: #8a8aa0; }
+
+  .modal-sheet__textarea textarea {
+    color: #d0d0e0 !important;
+    background: #222233 !important;
+  }
+
+  .modal-sheet__composer { border-top-color: rgba(200, 180, 150, 0.1); }
+  .modal-sheet__regret { border-bottom-color: rgba(200, 180, 150, 0.1); }
+  .modal-sheet__header { border-bottom-color: rgba(200, 180, 150, 0.1); }
+
+  // 信纸卡片
+  .regret-card { background: #2a2a3a; }
+
+  .regret-card__text,
+  .regret-card__author,
+  .regret-card__meta,
+  .regret-card__reply-text { color: #c0c0d0; }
+
+  .regret-card__emotion {
+    color: #b0b0c0 !important;
+    background: rgba(200, 180, 150, 0.1) !important;
+    border-color: rgba(200, 180, 150, 0.15) !important;
+  }
+
+  // 创作页面
+  .creator__paper { background: #2a2a3a; }
+  .creator__textarea { color: #d0d0e0; }
+  .creator__anonymous { background: #2a2a3a; border-color: rgba(200, 180, 150, 0.1); }
+  .creator__anonymous-label { color: #d0d0e0; }
+  .creator__anonymous-desc { color: #8a8aa0; }
+
+  // TabBar Taro 底部栏
+  .taro-tabbar__container .weui-tabbar {
+    background-color: rgba(30, 30, 45, 0.95) !important;
+  }
+  .weui-tabbar__label { color: #8a8aa0 !important; }
+  .weui-bar__item_on .weui-tabbar__label { color: #7ab8d4 !important; }
+}

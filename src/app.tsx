@@ -36,7 +36,7 @@ function App(props: { children: React.ReactNode }) {
   })
 
   return (
-    <View className='app'>
+    <View className='app' data-mode={mode}>
       {/* 全局主题切换按钮 */}
       <Text className='theme-toggle' onClick={toggleTheme}>
         {mode === 'day' ? '🌙' : '☀️'}
