@@ -1,4 +1,5 @@
 const path = require('path')
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 
 const config = {
   projectName: 'regret-exchange',
@@ -27,6 +28,9 @@ const config = {
   },
   framework: 'react',
   mini: {
+    webpackChain (chain) {
+      chain.resolve.plugin('TsconfigPathsPlugin').use(TsconfigPathsPlugin, [{ configFile: path.resolve(__dirname, '../tsconfig.json') }])
+    },
     postcss: {
       pxtransform: {
         enable: true,
@@ -48,6 +52,9 @@ const config = {
     }
   },
   h5: {
+    webpackChain (chain) {
+      chain.resolve.plugin('TsconfigPathsPlugin').use(TsconfigPathsPlugin, [{ configFile: path.resolve(__dirname, '../tsconfig.json') }])
+    },
     publicPath: '/',
     staticDirectory: 'static',
     postcss: {
@@ -65,7 +72,7 @@ const config = {
     }
   },
   rn: {
-    appName: 'taroDemo',
+    appName: 'regret-exchange',
     postcss: {
       cssModules: {
         enable: false, // 如需启用 CSS Modules，请改为 true

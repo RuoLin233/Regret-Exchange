@@ -12,7 +12,9 @@
     "build:h5": "taro build --type h5",
     "build:weapp": "taro build --type weapp",
     "dev:h5": "taro build --type h5 --watch",
-    "dev:weapp": "taro build --type weapp --watch"
+    "dev:weapp": "taro build --type weapp --watch",
+    "type-check": "tsc --noEmit",
+    "lint": "echo 'lint not configured yet'"
   },
   "dependencies": {
     "@babel/runtime": "^7.7.7",
@@ -37,6 +39,7 @@
     "babel-preset-taro": "^4.2.0",
     "dotenv": "^17.4.2",
     "sass": "^1.69.0",
+    "tsconfig-paths-webpack-plugin": "^4.2.0",
     "typescript": "^5.0.0"
   }
 }

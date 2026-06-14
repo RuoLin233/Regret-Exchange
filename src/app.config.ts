@@ -3,7 +3,7 @@ export default defineAppConfig({
     'pages/index/index'
   ],
   window: {
-    navigationBarTitleText: '遗憾兑换所',
+    navigationBarTitleText: '遗憾交易所',
     navigationBarBackgroundColor: '#ffffff'
   }
 })
