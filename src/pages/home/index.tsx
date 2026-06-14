@@ -43,7 +43,7 @@ class Home extends Component<{}, HomeState> {
 
   startTimer() {
     this.timer = setInterval(() => {
-      useRegretStore.getState().loadRegrets()
+      useRegretStore.getState().refreshRegrets()
     }, 60000)
   }
 
