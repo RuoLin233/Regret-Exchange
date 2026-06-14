@@ -1,8 +1,9 @@
 import { Component } from 'react'
 import { View, Text, ScrollView, Textarea, Button } from '@tarojs/components'
-import { showToast } from '@tarojs/taro'
+import { showToast, showLoading, hideLoading } from '@tarojs/taro'
 import type { Regret, Reply } from '../../types'
 import { fetchRepliesByRegret, createReply } from '../../services/replies'
+import { getStoredApiKey, generateAIResponse } from '../../services/ai'
 import { formatTimeAgo } from '../../utils/time'
 import './index.scss'
 
@@ -73,8 +74,41 @@ class RegretDetailModal extends Component<RegretDetailModalProps, RegretDetailMo
     }
   }
 
-  handleAIGenerate = () => {
-    showToast({ title: '请先在「我的」页面配置 API Key', icon: 'none' })
+  handleAIGenerate = async () => {
+    const savedKey = getStoredApiKey()
+    if (!savedKey) {
+      showToast({ title: '请先在「我的」页面配置 API Key', icon: 'none' })
+      return
+    }
+
+    showLoading({ title: '✨ 正在生成光...' })
+    const result = await generateAIResponse({
+      provider: savedKey.provider,
+      apiKey: savedKey.key,
+      regretContent: this.props.regret.content,
+    })
+    hideLoading()
+
+    if (result) {
+      this.setState({ submitting: true })
+      const reply = await createReply({
+        regret_id: this.props.regret.id,
+        content: result,
+        type: 'ai',
+      })
+      if (reply) {
+        this.setState((prev) => ({
+          replies: [...prev.replies, reply],
+          submitting: false,
+        }))
+        showToast({ title: '✨ 光已送达', icon: 'success' })
+      } else {
+        this.setState({ submitting: false })
+        showToast({ title: '提交失败，请重试', icon: 'none' })
+      }
+    } else {
+      showToast({ title: '生成失败，请检查 API Key 是否有效', icon: 'none' })
+    }
   }
 
   render() {
