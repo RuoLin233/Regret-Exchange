@@ -4,6 +4,7 @@ import { showToast, switchTab } from '@tarojs/taro'
 import OceanBackground from '../../components/OceanBackground'
 import { signInWithEmail, verifyOtp } from '../../services/auth'
 import { useUserStore } from '../../stores/useUserStore'
+import { useThemeStore } from '../../stores/useThemeStore'
 import './index.scss'
 
 interface AuthState {
@@ -107,9 +108,10 @@ class Auth extends Component<{}, AuthState> {
 
   render() {
     const { email, code, step, sending, verifying, error } = this.state
+    const mode = useThemeStore.getState().mode
 
     return (
-      <OceanBackground mode='day'>
+      <OceanBackground mode={mode}>
         <View className='auth'>
           {/* Header */}
           <View className='auth__header'>

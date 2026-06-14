@@ -3,6 +3,7 @@ import { View, Text, Textarea, Button, Switch } from '@tarojs/components'
 import { showToast, switchTab } from '@tarojs/taro'
 import OceanBackground from '../../components/OceanBackground'
 import AuthGuard from '../../components/AuthGuard'
+import { useThemeStore } from '../../stores/useThemeStore'
 import { createRegret } from '../../services/regrets'
 import { detectEmotion } from '../../utils/emotion'
 import { getStoredApiKey, askAI } from '../../services/ai'
@@ -131,10 +132,11 @@ class Creator extends Component<{}, CreatorState> {
 
   render() {
     const { content, isAnonymous, emotionTag, selectedColor, submitting, charCount } = this.state
+    const mode = useThemeStore.getState().mode
 
     return (
       <AuthGuard>
-        <OceanBackground mode='day'>
+        <OceanBackground mode={mode}>
           <View className='creator'>
             {/* Header */}
             <View className='creator__header'>

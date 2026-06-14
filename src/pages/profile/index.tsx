@@ -3,6 +3,7 @@ import { View, Text, Button, Input, Picker } from '@tarojs/components'
 import { showToast, showModal, reLaunch } from '@tarojs/taro'
 import OceanBackground from '../../components/OceanBackground'
 import AuthGuard from '../../components/AuthGuard'
+import { useThemeStore } from '../../stores/useThemeStore'
 import { useUserStore } from '../../stores/useUserStore'
 import { updateProfile } from '../../services/auth'
 import { fetchUserStats } from '../../services/regrets'
@@ -375,9 +376,10 @@ class Profile extends Component<{}, ProfileState> {
   }
 
   render() {
+    const mode = useThemeStore.getState().mode
     return (
       <AuthGuard>
-        <OceanBackground mode='day'>
+        <OceanBackground mode={mode}>
           <View className='profile'>
             <View className='profile__header'>
               <Text className='profile__title'>我的</Text>
