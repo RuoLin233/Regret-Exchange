@@ -9,6 +9,17 @@ function getColorHex(color: RegretColor | null | undefined): string {
   return color ? REGRET_COLORS[color]?.hex || '#c4a882' : '#c4a882'
 }
 
+function getMoonPhase(progress: number): string {
+  if (progress < 0.125) return '🌑'
+  if (progress < 0.25) return '🌒'
+  if (progress < 0.375) return '🌓'
+  if (progress < 0.5) return '🌔'
+  if (progress < 0.625) return '🌕'
+  if (progress < 0.75) return '🌖'
+  if (progress < 0.875) return '🌗'
+  return '🌘'
+}
+
 interface RegretCardProps {
   regret: Regret
   onClick?: () => void
@@ -32,14 +43,20 @@ class RegretCard extends Component<RegretCardProps> {
   render() {
     const { regret, onClick, variant = 'floating' } = this.props
     const emotionColor = this.getEmotionColor(regret.emotion_tag)
-    const accentColor = getColorHex(regret.regret_color)
+    const paperColor = getColorHex(regret.regret_color)
+    const progress = getDisappearProgress(regret.created_at)
 
     return (
       <View
         className={`regret-card regret-card--${variant}`}
         onClick={onClick}
-        style={{ borderLeftColor: accentColor }}
       >
+        {/* 信纸颜色覆盖层 */}
+        <View
+          className='regret-card__tint'
+          style={regret.regret_color && regret.regret_color !== 'ocean' ? { backgroundColor: `${paperColor}30` } : {}}
+        />
+
         {/* 情绪标签 */}
         {regret.emotion_tag && (
           <View
@@ -59,6 +76,13 @@ class RegretCard extends Component<RegretCardProps> {
           <Text className='regret-card__text'>{regret.content}</Text>
         </View>
 
+        {/* 回应预览 */}
+        {regret.latest_reply && (
+          <View className='regret-card__reply-preview'>
+            <Text className='regret-card__reply-text'>「{regret.latest_reply.content.substring(0, 24)}」</Text>
+          </View>
+        )}
+
         {/* 底部信息 */}
         <View className='regret-card__footer'>
           <Text className='regret-card__author'>
@@ -69,13 +93,16 @@ class RegretCard extends Component<RegretCardProps> {
           </Text>
         </View>
 
-        {/* 消散进度条 */}
-        <View className='regret-card__disappear-bar'>
-          <View
-            className='regret-card__disappear-fill'
-            style={{ width: `${getDisappearProgress(regret.created_at) * 100}%` }}
-          />
+        {/* 月相消散 */}
+        <View className='regret-card__moon'>
+          <Text className='regret-card__moon-icon'>{getMoonPhase(progress)}</Text>
+          <View className='regret-card__disappear-bar'>
+            <View className='regret-card__disappear-fill' style={{ width: `${progress * 100}%` }} />
+          </View>
         </View>
+
+        {/* 右下角装饰 */}
+        <View className='regret-card__corner' />
       </View>
     )
   }

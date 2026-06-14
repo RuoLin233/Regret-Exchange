@@ -2,26 +2,44 @@
 
 .regret-card {
   background: $letter-bg;
-  border: 1px solid $letter-border;
-  border-left: 6px solid #c4a882;
-  border-radius: $radius-md;
-  box-shadow: 0 2px 12px $letter-shadow;
+  border: none;
+  border-radius: 2px;
+  box-shadow:
+    0 1px 3px rgba(150, 140, 120, 0.12),
+    0 4px 16px rgba(150, 140, 120, 0.08);
   position: relative;
-  padding: 16px;
+  padding: 18px 18px 16px 22px;
   margin: 10px 16px;
   cursor: pointer;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-left-color 0.3s;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
 
-  // 左下角折角
+  // 信纸横线纹理
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      transparent,
+      transparent 27px,
+      rgba(200, 185, 160, 0.12) 27px,
+      rgba(200, 185, 160, 0.12) 28px
+    );
+    pointer-events: none;
+    border-radius: 2px;
+    z-index: 0;
+  }
+
+  // 左侧红色信纸边线
   &::after {
     content: '';
     position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 20px;
-    height: 20px;
-    background: linear-gradient(135deg, transparent 50%, rgba(200, 180, 150, 0.2) 50%);
-    border-bottom-left-radius: $radius-md;
+    top: 0;
+    left: 14px;
+    width: 1px;
+    height: 100%;
+    background: rgba(200, 120, 120, 0.18);
+    pointer-events: none;
+    z-index: 2;
   }
 
   &--floating {
@@ -52,7 +70,18 @@
     }
   }
 
+  // 信纸颜色覆盖层
+  &__tint {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: 2px;
+    z-index: 1;
+  }
+
   &__emotion {
+    position: relative;
+    z-index: 2;
     display: inline-flex;
     align-items: center;
     padding: 2px 10px;
@@ -63,19 +92,45 @@
   }
 
   &__content {
+    position: relative;
+    z-index: 2;
     margin-bottom: 10px;
   }
 
   &__text {
     font-family: $font-hand;
     font-size: 15px;
-    line-height: 1.7;
+    line-height: 1.9;
     color: $text-primary;
     word-break: break-word;
     letter-spacing: 0.5px;
   }
 
+  // 回应预览
+  &__reply-preview {
+    position: relative;
+    z-index: 2;
+    margin: 6px 0 10px;
+    padding: 6px 10px;
+    background: rgba(200, 180, 150, 0.06);
+    border-radius: 4px;
+    border-left: 2px solid rgba(200, 180, 150, 0.2);
+  }
+
+  &__reply-text {
+    font-size: 12px;
+    color: $text-secondary;
+    line-height: 1.4;
+    font-style: italic;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+  }
+
   &__footer {
+    position: relative;
+    z-index: 2;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -91,25 +146,55 @@
     color: $text-light;
   }
 
-  &__disappear-bar {
-    height: 2px;
-    background: rgba(200, 180, 150, 0.2);
-    border-radius: 1px;
+  // 月相消散
+  &__moon {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 6px;
     margin-top: 10px;
+  }
+
+  &__moon-icon {
+    font-size: 14px;
+    flex-shrink: 0;
+    width: 18px;
+    text-align: center;
+  }
+
+  &__disappear-bar {
+    flex: 1;
+    height: 3px;
+    background: rgba(200, 180, 150, 0.15);
+    border-radius: 2px;
     overflow: hidden;
   }
 
   &__disappear-fill {
     height: 100%;
-    background: linear-gradient(90deg, rgba(255, 215, 109, 0.6), rgba(196, 122, 122, 0.4));
-    border-radius: 1px;
+    background: linear-gradient(90deg, #7ab8d4, #c47a7a);
+    border-radius: 2px;
     transition: width 60s linear;
   }
 
-  // 桌面端略大
+  // 右下角信纸装饰
+  &__corner {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(225deg, transparent 50%, rgba(200, 180, 150, 0.1) 50%);
+    border-bottom-right-radius: 2px;
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  // 桌面端
   @media (min-width: 768px) {
     margin: 6px 0;
-    padding: 20px;
+    padding: 20px 20px 18px 24px;
 
     &__text {
       font-size: 16px;

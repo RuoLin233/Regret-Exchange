@@ -20,10 +20,29 @@ export async function fetchVisibleRegrets(): Promise<Regret[]> {
 
   if (!data) return []
 
+  // 批量获取最新回应预览
+  const regretIds = data.filter((r: any) => r.reply_count?.[0]?.count > 0).map((r: any) => r.id)
+  const latestReplies: Record<string, { content: string }> = {}
+  if (regretIds.length > 0) {
+    const { data: replies } = await supabase
+      .from('replies')
+      .select('regret_id, content')
+      .in('regret_id', regretIds)
+      .order('created_at', { ascending: false })
+    const seen = new Set<string>()
+    for (const r of replies || []) {
+      if (!seen.has(r.regret_id)) {
+        seen.add(r.regret_id)
+        latestReplies[r.regret_id] = { content: r.content }
+      }
+    }
+  }
+
   return data.map((item: any) => ({
     ...item,
     user_nickname: item.is_anonymous ? '匿名' : item.profiles?.nickname,
     reply_count: item.reply_count?.[0]?.count || 0,
+    latest_reply: latestReplies[item.id] || null,
   }))
 }
 

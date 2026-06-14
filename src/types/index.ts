@@ -47,6 +47,7 @@ export interface Regret {
   disappear_at: string;
   is_visible: boolean;
   reply_count?: number;
+  latest_reply?: { content: string } | null;
   user_nickname?: string;
 }
 
