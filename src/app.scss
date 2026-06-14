@@ -1,6 +1,12 @@
 @import './styles/variables';
 @import './styles/mixins';
 
+html, body {
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
 page {
   font-family: $font-body;
   color: $text-primary;
@@ -21,4 +27,19 @@ view, text {
 // TabBar 底部间距
 .app-content {
   padding-bottom: 64px;
+}
+
+// 响应式基础
+@media (min-width: 768px) {
+  .ocean-bg__content {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .tab-bar {
+    max-width: 900px;
+    left: 50% !important;
+    transform: translateX(-50%);
+    border-radius: 16px 16px 0 0;
+    bottom: 10px !important;
+  }
 }
