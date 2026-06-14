@@ -1,8 +1,9 @@
 import { useState } from 'react'
-import { View } from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
 import { useLaunch, useDidShow, getCurrentPages } from '@tarojs/taro'
 import { useUserStore } from './stores/useUserStore'
 import { useModalStore } from './stores/useModalStore'
+import { useThemeStore } from './stores/useThemeStore'
 import RegretDetailModal from './components/RegretDetailModal'
 import './app.scss'
 
@@ -12,6 +13,8 @@ function App(props: { children: React.ReactNode }) {
   const modalVisible = useModalStore((s) => s.visible)
   const modalRegret = useModalStore((s) => s.regret)
   const closeModal = useModalStore((s) => s.close)
+  const mode = useThemeStore((s) => s.mode)
+  const toggleTheme = useThemeStore((s) => s.toggle)
 
   useLaunch(() => {
     initialize()
@@ -34,8 +37,11 @@ function App(props: { children: React.ReactNode }) {
 
   return (
     <View className='app'>
+      {/* 全局主题切换按钮 */}
+      <Text className='theme-toggle' onClick={toggleTheme}>
+        {mode === 'day' ? '🌙' : '☀️'}
+      </Text>
       {props.children}
-      {/* 全局弹窗，渲染在 app 级别，不被页面和 TabBar 限制 */}
       {modalRegret && (
         <RegretDetailModal
           regret={modalRegret}

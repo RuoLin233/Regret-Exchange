@@ -37,10 +37,22 @@ class OceanBackground extends Component<OceanBackgroundProps> {
         <View className='ocean-bg__seagull ocean-bg__seagull--1' />
         <View className='ocean-bg__seagull ocean-bg__seagull--2' />
 
-        {/* 云朵（仅桌面端可见） */}
-        <View className='ocean-bg__cloud ocean-bg__cloud--1' />
-        <View className='ocean-bg__cloud ocean-bg__cloud--2' />
-        <View className='ocean-bg__cloud ocean-bg__cloud--3' />
+        {/* 泡沫粒子（从海面上升） */}
+        <View className='ocean-bg__bubbles'>
+          {Array.from({ length: 12 }).map((_, i) => (
+            <View
+              key={i}
+              className='ocean-bg__bubble'
+              style={{
+                left: `${5 + Math.random() * 90}%`,
+                width: `${4 + Math.random() * 8}px`,
+                height: `${4 + Math.random() * 8}px`,
+                animationDelay: `${Math.random() * 8}s`,
+                animationDuration: `${6 + Math.random() * 6}s`,
+              }}
+            />
+          ))}
+        </View>
 
         {/* 波浪层 */}
         <View className='ocean-bg__wave ocean-bg__wave--1' />
