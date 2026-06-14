@@ -35,6 +35,55 @@ view, text {
     max-width: 900px;
     margin: 0 auto;
   }
+}
+
+// 隐藏底部导航栏的空白图标 img（文字已在 label 中）
+.weui-tabbar__icon img[src=""],
+.weui-tabbar__icon img:not([src]),
+.weui-tabbar__icon {
+  display: none !important;
+}
+
+// 调整导航栏样式
+.taro-tabbar__container {
+  .weui-tabbar {
+    background-color: rgba(255, 248, 235, 0.95) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  .weui-tabbar__label {
+    font-size: 11px !important;
+    padding: 2px 0 !important;
+  }
+}
+
+// 页面内容不被 TabBar 挡住
+.taro-tabbar__panel {
+  padding-bottom: 55px;
+  box-sizing: border-box;
+}
+
+// TabBar 置于底层，确保弹窗等覆盖元素在其之上
+.taro-tabbar__container {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+// 弹窗覆盖层永远在最上
+.modal-overlay {
+  z-index: 99999 !important;
+}
+
+.modal-sheet {
+  z-index: 999999 !important;
+}
+
+// 响应式基础
+@media (min-width: 768px) {
+  .ocean-bg__content {
+    max-width: 900px;
+    margin: 0 auto;
+  }
   .tab-bar {
     max-width: 900px;
     left: 50% !important;

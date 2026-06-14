@@ -1,56 +1,77 @@
 import { create } from 'zustand'
 import { supabase } from '../services/supabase'
-import { getProfile, signOut } from '../services/auth'
-import type { User } from '@supabase/supabase-js'
 import type { Profile } from '../types'
 
+// 本地用户邮箱
+const LOCAL_EMAIL = 'local@test.com'
+
+const DEFAULT_PROFILE: Profile = {
+  id: '',
+  nickname: '海风旅人',
+  avatar_url: null,
+  created_at: new Date().toISOString(),
+}
+
 interface UserState {
-  user: User | null
+  user: { id: string; email: string } | null
   profile: Profile | null
   isAuthReady: boolean
   initialize: () => Promise<void>
   refreshProfile: () => Promise<void>
-  logout: () => Promise<void>
-  setUser: (user: User | null) => void
+  logout: () => void
 }
 
-export const useUserStore = create<UserState>((set, get) => ({
+export const useUserStore = create<UserState>((set) => ({
   user: null,
   profile: null,
   isAuthReady: false,
 
   initialize: async () => {
-    const { data: { session } } = await supabase.auth.getSession()
-    if (session?.user) {
-      set({ user: session.user, isAuthReady: true })
-      const profile = await getProfile(session.user.id)
-      if (profile) set({ profile })
-    } else {
-      set({ isAuthReady: true })
-    }
+    try {
+      // 从数据库查找本地测试用户
+      const { data: users } = await supabase
+        .from('profiles')
+        .select('*')
+        .limit(1)
 
-    supabase.auth.onAuthStateChange(async (_event, session) => {
-      if (session?.user) {
-        set({ user: session.user })
-        const profile = await getProfile(session.user.id)
-        if (profile) set({ profile })
-      } else {
-        set({ user: null, profile: null })
+      if (users && users.length > 0) {
+        const profile = users[0] as Profile
+        set({
+          user: { id: profile.id, email: LOCAL_EMAIL },
+          profile,
+          isAuthReady: true,
+        })
+        return
       }
-    })
+
+      // 没有找到用户，用默认值
+      set({
+        user: { id: '', email: LOCAL_EMAIL },
+        profile: DEFAULT_PROFILE,
+        isAuthReady: true,
+      })
+    } catch {
+      set({
+        user: { id: '', email: LOCAL_EMAIL },
+        profile: DEFAULT_PROFILE,
+        isAuthReady: true,
+      })
+    }
   },
 
   refreshProfile: async () => {
-    const { user } = get()
-    if (!user) return
-    const profile = await getProfile(user.id)
-    if (profile) set({ profile })
+    try {
+      const { data } = await supabase
+        .from('profiles')
+        .select('*')
+        .limit(1)
+      if (data && data.length > 0) set({ profile: data[0] as Profile })
+    } catch {
+      // ignore
+    }
   },
 
-  logout: async () => {
-    await signOut()
-    set({ user: null, profile: null })
+  logout: () => {
+    // 本地模式不执行登出
   },
-
-  setUser: (user) => set({ user }),
 }))

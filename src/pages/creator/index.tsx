@@ -5,7 +5,9 @@ import OceanBackground from '../../components/OceanBackground'
 import AuthGuard from '../../components/AuthGuard'
 import { createRegret } from '../../services/regrets'
 import { detectEmotion } from '../../utils/emotion'
-import type { EmotionTag } from '../../types'
+import { getStoredApiKey, askAI } from '../../services/ai'
+import type { EmotionTag, RegretColor } from '../../types'
+import { REGRET_COLORS } from '../../types'
 import './index.scss'
 
 const MAX_CHARS = 500
@@ -24,15 +26,19 @@ interface CreatorState {
   content: string
   isAnonymous: boolean
   emotionTag: EmotionTag | null
+  selectedColor: RegretColor
   submitting: boolean
   charCount: number
 }
 
 class Creator extends Component<{}, CreatorState> {
+  private aiEmotionTimer: number | null = null
+
   state: CreatorState = {
     content: '',
     isAnonymous: true,
     emotionTag: null,
+    selectedColor: 'ocean',
     submitting: false,
     charCount: 0,
   }
@@ -40,11 +46,40 @@ class Creator extends Component<{}, CreatorState> {
   handleContentInput = (e: any) => {
     const value = e.detail.value
     if (value.length > MAX_CHARS) return
+    // 先用关键词快速检测
+    const tag = detectEmotion(value)
     this.setState({
       content: value,
       charCount: value.length,
-      emotionTag: detectEmotion(value),
+      emotionTag: tag,
     })
+    // 用户停止输入 1.2 秒后用 AI 精校
+    if (this.aiEmotionTimer) clearTimeout(this.aiEmotionTimer)
+    if (value.trim().length >= 4) {
+      this.aiEmotionTimer = window.setTimeout(() => this.handleAIEmotion(), 1200)
+    }
+  }
+
+  handleAIEmotion = async () => {
+    const { content } = this.state
+    if (!content.trim()) return
+
+    const savedKey = getStoredApiKey()
+    if (!savedKey) return
+
+    try {
+      const result = await askAI(
+        savedKey.provider,
+        savedKey.key,
+        `请用1个双字中文词精准概括这段话的核心情绪（只输出词，不要标点）：\n「${content}」\n例如：不舍、遗憾、思念、释然、怀念、惋惜、愧疚、感伤、温暖、苦涩、落寞、眷恋、怅然、庆幸、期待`,
+      )
+      if (result) {
+        const word = result.replace(/[「」\n\s""]/g, '').trim().substring(0, 6)
+        if (word.length >= 2) {
+          this.setState({ emotionTag: word })
+        }
+      }
+    } catch {}
   }
 
   handleAnonymousChange = (e: any) => {
@@ -52,7 +87,7 @@ class Creator extends Component<{}, CreatorState> {
   }
 
   handleSubmit = async () => {
-    const { content, isAnonymous, emotionTag, submitting } = this.state
+    const { content, isAnonymous, emotionTag, selectedColor, submitting } = this.state
     if (submitting) return
 
     const trimmed = content.trim()
@@ -68,9 +103,18 @@ class Creator extends Component<{}, CreatorState> {
         content: trimmed,
         is_anonymous: isAnonymous,
         emotion_tag: emotionTag,
+        regret_color: selectedColor,
       })
 
       if (result) {
+        // 立即重置表单
+        this.setState({
+          content: '',
+          charCount: 0,
+          emotionTag: null,
+          submitting: false,
+          isAnonymous: true,
+        })
         showToast({ title: '遗憾已投放', icon: 'success' })
         setTimeout(() => {
           switchTab({ url: '/pages/home/index' })
@@ -86,7 +130,7 @@ class Creator extends Component<{}, CreatorState> {
   }
 
   render() {
-    const { content, isAnonymous, emotionTag, submitting, charCount } = this.state
+    const { content, isAnonymous, emotionTag, selectedColor, submitting, charCount } = this.state
 
     return (
       <AuthGuard>
@@ -130,6 +174,25 @@ class Creator extends Component<{}, CreatorState> {
                 >
                   {charCount}/{MAX_CHARS}
                 </Text>
+              </View>
+            </View>
+
+            {/* Color picker */}
+            <View className='creator__color-section'>
+              <Text className='creator__color-label'>信笺颜色</Text>
+              <View className='creator__color-options'>
+                {(Object.entries(REGRET_COLORS) as [RegretColor, typeof REGRET_COLORS[RegretColor]][]).map(([key, val]) => (
+                  <View
+                    key={key}
+                    className={`creator__color-dot ${this.state.selectedColor === key ? 'creator__color-dot--active' : ''}`}
+                    style={{ backgroundColor: val.hex }}
+                    onClick={() => this.setState({ selectedColor: key })}
+                  >
+                    {this.state.selectedColor === key && (
+                      <Text style={{ color: '#fff', fontSize: 14, lineHeight: '28px' }}>✓</Text>
+                    )}
+                  </View>
+                ))}
               </View>
             </View>
 

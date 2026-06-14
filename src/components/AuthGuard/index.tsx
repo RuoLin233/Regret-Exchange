@@ -1,6 +1,5 @@
-import { useEffect, type FC } from 'react'
+import { type FC } from 'react'
 import { View } from '@tarojs/components'
-import { navigateTo } from '@tarojs/taro'
 import { useUserStore } from '../../stores/useUserStore'
 
 interface AuthGuardProps {
@@ -8,16 +7,9 @@ interface AuthGuardProps {
 }
 
 const AuthGuard: FC<AuthGuardProps> = ({ children }) => {
-  const user = useUserStore((s) => s.user)
   const isAuthReady = useUserStore((s) => s.isAuthReady)
 
-  useEffect(() => {
-    if (isAuthReady && !user) {
-      navigateTo({ url: '/pages/auth/index' })
-    }
-  }, [isAuthReady, user])
-
-  if (!isAuthReady || !user) {
+  if (!isAuthReady) {
     return <View className='auth-guard-loading' />
   }
 

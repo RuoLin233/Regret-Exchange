@@ -1,12 +1,17 @@
 import { supabase } from './supabase'
 import type { Reply, CreateReplyInput } from '../types'
+import { useUserStore } from '../stores/useUserStore'
+
+function getUserId(): string {
+  return useUserStore.getState().user?.id || ''
+}
 
 export async function fetchRepliesByRegret(regretId: string): Promise<Reply[]> {
   const { data } = await supabase
     .from('replies')
     .select(`
       *,
-      profiles!inner(nickname)
+      profiles(nickname)
     `)
     .eq('regret_id', regretId)
     .order('created_at', { ascending: true })
@@ -20,14 +25,14 @@ export async function fetchRepliesByRegret(regretId: string): Promise<Reply[]> {
 }
 
 export async function createReply(input: CreateReplyInput): Promise<Reply | null> {
-  const user = await supabase.auth.getUser()
-  if (!user.data.user) return null
+  const userId = getUserId()
+  if (!userId) return null
 
   const { data } = await supabase
     .from('replies')
     .insert({
       regret_id: input.regret_id,
-      user_id: user.data.user.id,
+      user_id: userId,
       content: input.content,
       type: input.type,
     })

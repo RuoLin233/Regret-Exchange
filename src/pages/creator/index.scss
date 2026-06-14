@@ -114,6 +114,47 @@
     }
   }
 
+  // Color picker
+  &__color-section {
+    margin-bottom: 12px;
+    padding: 0 4px;
+  }
+
+  &__color-label {
+    font-size: 13px;
+    color: $text-secondary;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  &__color-options {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  &__color-dot {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid transparent;
+
+    &--active {
+      transform: scale(1.15);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      border-color: rgba(255,255,255,0.5);
+    }
+
+    &:active {
+      transform: scale(0.9);
+    }
+  }
+
   // Anonymous toggle row
   &__anonymous {
     display: flex;

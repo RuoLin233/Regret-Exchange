@@ -1,8 +1,10 @@
 import { Component } from 'react'
 import { View, Text, ScrollView } from '@tarojs/components'
+import { showToast } from '@tarojs/taro'
 import OceanBackground from '../../components/OceanBackground'
 import AuthGuard from '../../components/AuthGuard'
 import RegretCard from '../../components/RegretCard'
+import { supabase } from '../../services/supabase'
 import { useUserStore } from '../../stores/useUserStore'
 import { fetchUserRegrets } from '../../services/regrets'
 import { fetchUserReplies } from '../../services/replies'
@@ -27,9 +29,13 @@ class StarMap extends Component<{}, StarMapState> {
     activeTab: 'regrets',
   }
 
-  async componentDidMount() {
+  async loadData() {
     const user = useUserStore.getState().user
-    if (!user) return
+    if (!user) {
+      // 用户还没加载好，延迟重试
+      setTimeout(() => this.loadData(), 500)
+      return
+    }
     const [regrets, replies] = await Promise.all([
       fetchUserRegrets(user.id),
       fetchUserReplies(user.id),
@@ -42,18 +48,28 @@ class StarMap extends Component<{}, StarMapState> {
     })
   }
 
+  handleDeleteRegret = async (id: string) => {
+    try {
+      await supabase.from('regrets').delete().eq('id', id)
+      showToast({ title: '已删除', icon: 'success' })
+      this.loadData()
+    } catch { showToast({ title: '删除失败', icon: 'none' }) }
+  }
+
+  handleDeleteReply = async (id: string) => {
+    try {
+      await supabase.from('replies').delete().eq('id', id)
+      showToast({ title: '已删除', icon: 'success' })
+      this.loadData()
+    } catch { showToast({ title: '删除失败', icon: 'none' }) }
+  }
+
+  componentDidMount() {
+    this.loadData()
+  }
+
   componentDidShow() {
-    if (!this.state.loading) {
-      const user = useUserStore.getState().user
-      if (user) {
-        Promise.all([
-          fetchUserRegrets(user.id),
-          fetchUserReplies(user.id),
-        ]).then(([regrets, replies]) => {
-          this.setState({ regrets, replies, stats: { regrets_count: regrets.length, replies_count: replies.length } })
-        })
-      }
-    }
+    this.loadData()
   }
 
   render() {
@@ -136,7 +152,10 @@ class StarMap extends Component<{}, StarMapState> {
                 ) : (
                   <View className='starmap__grid'>
                     {regrets.map((regret) => (
-                      <RegretCard key={regret.id} regret={regret} variant='compact' />
+                      <View key={regret.id} className='starmap__regret-wrapper'>
+                        <RegretCard regret={regret} variant='compact' />
+                        <Text className='starmap__delete-btn' onClick={() => this.handleDeleteRegret(regret.id)}>🗑️</Text>
+                      </View>
                     ))}
                   </View>
                 )
@@ -150,7 +169,10 @@ class StarMap extends Component<{}, StarMapState> {
                   <View className='starmap__grid'>
                     {replies.map((reply) => (
                       <View key={reply.id} className='starmap__reply-item'>
-                        <Text className='starmap__reply-content'>{reply.content}</Text>
+                        <View className='starmap__reply-header-bar'>
+                          <Text className='starmap__reply-content'>{reply.content}</Text>
+                          <Text className='starmap__delete-btn' onClick={() => this.handleDeleteReply(reply.id)}>🗑️</Text>
+                        </View>
                         <View className='starmap__reply-footer'>
                           <Text className='starmap__reply-tag'>
                             {reply.type === 'ai' ? '✨ AI' : '✍️ 手写'}

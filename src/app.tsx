@@ -1,13 +1,17 @@
 import { useState } from 'react'
 import { View } from '@tarojs/components'
 import { useLaunch, useDidShow, getCurrentPages } from '@tarojs/taro'
-import TabBar from './components/TabBar'
 import { useUserStore } from './stores/useUserStore'
+import { useModalStore } from './stores/useModalStore'
+import RegretDetailModal from './components/RegretDetailModal'
 import './app.scss'
 
 function App(props: { children: React.ReactNode }) {
   const [currentTab, setCurrentTab] = useState(0)
   const initialize = useUserStore((s) => s.initialize)
+  const modalVisible = useModalStore((s) => s.visible)
+  const modalRegret = useModalStore((s) => s.regret)
+  const closeModal = useModalStore((s) => s.close)
 
   useLaunch(() => {
     initialize()
@@ -15,26 +19,30 @@ function App(props: { children: React.ReactNode }) {
 
   useDidShow(() => {
     const pages = getCurrentPages()
-    const currentPage = pages[pages.length - 1]
-    if (currentPage) {
-      const route = currentPage.route || ''
-      const tabMap: Record<string, number> = {
+    const page = pages[pages.length - 1]
+    if (page) {
+      const route = page.route || ''
+      const map: Record<string, number> = {
         'pages/home/index': 0,
         'pages/creator/index': 1,
         'pages/starmap/index': 2,
         'pages/profile/index': 3,
       }
-      const tabIndex = tabMap[route]
-      if (tabIndex !== undefined) {
-        setCurrentTab(tabIndex)
-      }
+      if (map[route] !== undefined) setCurrentTab(map[route])
     }
   })
 
   return (
     <View className='app'>
       {props.children}
-      <TabBar current={currentTab} />
+      {/* 全局弹窗，渲染在 app 级别，不被页面和 TabBar 限制 */}
+      {modalRegret && (
+        <RegretDetailModal
+          regret={modalRegret}
+          visible={modalVisible}
+          onClose={closeModal}
+        />
+      )}
     </View>
   )
 }

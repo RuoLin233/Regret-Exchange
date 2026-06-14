@@ -1,43 +1,33 @@
 import { Component } from 'react'
 import { View, Text } from '@tarojs/components'
-import { switchTab } from '@tarojs/taro'
 import './index.scss'
-
-interface TabItem {
-  icon: string
-  label: string
-  path: string
-}
-
-const tabs: TabItem[] = [
-  { icon: '🏠', label: '主页', path: '/pages/home/index' },
-  { icon: '✍️', label: '创作', path: '/pages/creator/index' },
-  { icon: '🌌', label: '星图', path: '/pages/starmap/index' },
-  { icon: '👤', label: '我的', path: '/pages/profile/index' },
-]
 
 interface TabBarProps {
   current: number
+  onSwitch: (index: number) => void
 }
 
+const tabLabels = ['主页', '创作', '星图', '我的']
+const tabIcons = ['🏠', '✍️', '🌌', '👤']
+
 class TabBar extends Component<TabBarProps> {
-  handleTabClick = (index: number, path: string) => {
+  handleTabClick = (index: number) => {
     if (index === this.props.current) return
-    switchTab({ url: path })
+    this.props.onSwitch(index)
   }
 
   render() {
     const { current } = this.props
     return (
       <View className='tab-bar'>
-        {tabs.map((tab, index) => (
+        {tabLabels.map((label, index) => (
           <View
-            key={tab.path}
+            key={label}
             className={`tab-item ${index === current ? 'tab-item--active' : ''}`}
-            onClick={() => this.handleTabClick(index, tab.path)}
+            onClick={() => this.handleTabClick(index)}
           >
-            <Text className='tab-item__icon'>{tab.icon}</Text>
-            <Text className='tab-item__label'>{tab.label}</Text>
+            <Text className='tab-item__icon'>{tabIcons[index]}</Text>
+            <Text className='tab-item__label'>{label}</Text>
           </View>
         ))}
       </View>

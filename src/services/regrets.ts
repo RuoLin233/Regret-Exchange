@@ -1,12 +1,17 @@
 import { supabase } from './supabase'
 import type { Regret, CreateRegretInput, UserStats } from '../types'
+import { useUserStore } from '../stores/useUserStore'
+
+function getUserId(): string {
+  return useUserStore.getState().user?.id || ''
+}
 
 export async function fetchVisibleRegrets(): Promise<Regret[]> {
   const { data } = await supabase
     .from('regrets')
     .select(`
       *,
-      profiles!inner(nickname),
+      profiles(nickname),
       reply_count:replies(count)
     `)
     .eq('is_visible', true)
@@ -43,15 +48,16 @@ export async function fetchUserRegrets(userId: string): Promise<Regret[]> {
 }
 
 export async function createRegret(input: CreateRegretInput): Promise<Regret | null> {
-  const user = await supabase.auth.getUser()
-  if (!user.data.user) return null
+  const userId = getUserId()
+  if (!userId) return null
 
   const { data } = await supabase
     .from('regrets')
     .insert({
-      user_id: user.data.user.id,
+      user_id: userId,
       content: input.content,
       emotion_tag: input.emotion_tag || null,
+      regret_color: input.regret_color || 'ocean',
       is_anonymous: input.is_anonymous,
     })
     .select()

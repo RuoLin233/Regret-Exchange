@@ -14,6 +14,32 @@
     }
   }
 
+  &__header-top {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    position: relative;
+  }
+
+  &__ai-btn {
+    font-size: 12px;
+    color: #fff;
+    background: linear-gradient(135deg, #7a9acc, #5a8abc);
+    padding: 4px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    transition: transform 0.15s, box-shadow 0.15s;
+    user-select: none;
+    white-space: nowrap;
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+
   &__title {
     font-size: 22px;
     font-weight: 700;
@@ -38,16 +64,27 @@
     }
   }
 
+  // ScrollView wrapper
   &__list {
-    padding: $spacing-sm 0 140px;
-    // On tablet+, use 2-column grid
+    height: calc(100vh - 120px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+
+    @include respond-to('tablet') {
+      max-width: 920px;
+      margin: 0 auto;
+    }
+  }
+
+  // Grid container inside ScrollView
+  &__grid {
+    padding: $spacing-sm $spacing-md 160px;
+
     @include respond-to('tablet') {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      padding: $spacing-md $spacing-md 140px;
-      max-width: 900px;
-      margin: 0 auto;
+      gap: 12px;
+      padding: $spacing-md $spacing-md 160px;
     }
   }
 
@@ -58,7 +95,6 @@
     justify-content: center;
     padding: 80px 20px;
     color: $text-secondary;
-    grid-column: 1 / -1;
   }
 
   &__empty-icon {
@@ -75,6 +111,11 @@
   &__empty-hint {
     font-size: 13px;
     color: $text-light;
+    font-family: $font-hand;
+  }
+
+  &__loading-text {
+    font-size: 14px;
     font-family: $font-hand;
   }
 

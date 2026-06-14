@@ -1,8 +1,13 @@
 import { Component } from 'react'
 import { View, Text } from '@tarojs/components'
-import type { Regret } from '../../types'
+import type { Regret, RegretColor } from '../../types'
+import { REGRET_COLORS } from '../../types'
 import { formatTimeAgo, getDisappearProgress } from '../../utils/time'
 import './index.scss'
+
+function getColorHex(color: RegretColor | null | undefined): string {
+  return color ? REGRET_COLORS[color]?.hex || '#c4a882' : '#c4a882'
+}
 
 interface RegretCardProps {
   regret: Regret
@@ -27,11 +32,13 @@ class RegretCard extends Component<RegretCardProps> {
   render() {
     const { regret, onClick, variant = 'floating' } = this.props
     const emotionColor = this.getEmotionColor(regret.emotion_tag)
+    const accentColor = getColorHex(regret.regret_color)
 
     return (
       <View
         className={`regret-card regret-card--${variant}`}
         onClick={onClick}
+        style={{ borderLeftColor: accentColor }}
       >
         {/* 情绪标签 */}
         {regret.emotion_tag && (

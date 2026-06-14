@@ -16,6 +16,14 @@ interface AuthState {
 }
 
 class Auth extends Component<{}, AuthState> {
+  // 本地开发模式：已有用户则自动跳转首页
+  componentDidMount() {
+    const { user } = useUserStore.getState()
+    if (user) {
+      switchTab({ url: '/pages/home/index' })
+    }
+  }
+
   state: AuthState = {
     email: '',
     code: '',

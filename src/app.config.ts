@@ -11,14 +11,16 @@ export default defineAppConfig({
     backgroundColor: '#c4dde8',
   },
   tabBar: {
-    custom: true,
+    custom: false,
     color: '#7a8a9a',
-    selectedColor: '#4a5a6a',
+    selectedColor: '#4a7aaa',
+    backgroundColor: '#fff8eb',
+    borderStyle: 'black',
     list: [
-      { pagePath: 'pages/home/index', text: '主页', iconPath: '', selectedIconPath: '' },
-      { pagePath: 'pages/creator/index', text: '创作', iconPath: '', selectedIconPath: '' },
-      { pagePath: 'pages/starmap/index', text: '星图', iconPath: '', selectedIconPath: '' },
-      { pagePath: 'pages/profile/index', text: '我的', iconPath: '', selectedIconPath: '' },
+      { pagePath: 'pages/home/index', text: '🏠 主页' },
+      { pagePath: 'pages/creator/index', text: '✍️ 创作' },
+      { pagePath: 'pages/starmap/index', text: '🌟 星图' },
+      { pagePath: 'pages/profile/index', text: '👤 我的' },
     ],
   },
 })
