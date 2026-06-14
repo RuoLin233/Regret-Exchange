@@ -1,0 +1,355 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.profile {
+  padding: 0 20px;
+  min-height: 100vh;
+
+  &__header {
+    padding: 48px 4px 24px;
+    text-align: center;
+  }
+
+  &__title {
+    font-family: $font-hand;
+    font-size: 28px;
+    color: $text-primary;
+    display: block;
+  }
+
+  // Letter-card sections
+  &__card {
+    @include letter-card;
+    padding: 20px;
+    margin-bottom: $spacing-md;
+    animation: fade-in-up 0.4s ease;
+  }
+
+  // ===== User card =====
+  &__avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #7ab8d4, #b8d4e8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+  }
+
+  &__avatar-text {
+    font-size: 26px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  &__user-info {
+    text-align: center;
+  }
+
+  &__nickname-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+  }
+
+  &__nickname {
+    font-size: 18px;
+    font-weight: 500;
+    color: $text-primary;
+    display: block;
+  }
+
+  &__edit-icon {
+    font-size: 14px;
+    color: $text-light;
+    opacity: 0;
+    transition: opacity $transition-fast;
+
+    .profile__nickname-row:hover & {
+      opacity: 1;
+    }
+  }
+
+  &__email {
+    font-size: 13px;
+    color: $text-secondary;
+    display: block;
+    margin-top: 4px;
+    word-break: break-all;
+  }
+
+  // ===== Nickname editing =====
+  &__edit-area {
+    text-align: center;
+  }
+
+  &__nickname-input {
+    width: 100%;
+    max-width: 240px;
+    height: 40px;
+    border: 1px solid $letter-border;
+    border-radius: $radius-md;
+    padding: 0 12px;
+    font-size: 16px;
+    color: $text-primary;
+    background: #fff;
+    text-align: center;
+    margin: 0 auto 12px;
+  }
+
+  &__edit-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  &__edit-btn {
+    width: auto;
+    min-width: 80px;
+    height: 36px;
+    line-height: 36px;
+    text-align: center;
+    font-size: 14px;
+    border-radius: $radius-md;
+    padding: 0 16px;
+    margin: 0;
+
+    &--save {
+      background: linear-gradient(135deg, #7ab8d4, #6aa8c4);
+      color: #fff;
+      border: none;
+    }
+
+    &--cancel {
+      background: transparent;
+      color: $text-secondary;
+      border: 1px solid $letter-border;
+    }
+  }
+
+  // ===== Stats bar =====
+  &__stats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 20px;
+  }
+
+  &__stat-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  &__stat-number {
+    font-size: 24px;
+    font-weight: 600;
+    color: $text-primary;
+  }
+
+  &__stat-label {
+    font-size: 12px;
+    color: $text-secondary;
+  }
+
+  &__stat-divider {
+    width: 1px;
+    height: 32px;
+    background: $letter-border;
+    margin: 0 8px;
+  }
+
+  // ===== AI section =====
+  &__ai-section {
+    animation-delay: 0.1s;
+    animation-fill-mode: both;
+  }
+
+  &__section-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: $text-primary;
+    display: block;
+    margin-bottom: 12px;
+  }
+
+  &__ai-status-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+
+  &__ai-check {
+    font-size: 16px;
+  }
+
+  &__ai-provider-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: $text-primary;
+  }
+
+  &__ai-dot {
+    font-size: 14px;
+    color: $text-light;
+  }
+
+  &__ai-masked-key {
+    font-size: 12px;
+    color: $text-secondary;
+    font-family: monospace;
+  }
+
+  &__ai-actions {
+    display: flex;
+    gap: 12px;
+  }
+
+  &__ai-btn {
+    width: auto;
+    height: 34px;
+    line-height: 34px;
+    text-align: center;
+    font-size: 13px;
+    border-radius: $radius-md;
+    padding: 0 16px;
+    margin: 0;
+
+    &--change {
+      background: rgba(122, 184, 212, 0.1);
+      color: #7ab8d4;
+      border: 1px solid rgba(122, 184, 212, 0.3);
+    }
+
+    &--clear {
+      background: rgba(196, 122, 122, 0.1);
+      color: #c47a7a;
+      border: 1px solid rgba(196, 122, 122, 0.3);
+    }
+  }
+
+  &__ai-add-btn {
+    width: 100%;
+    height: 44px;
+    line-height: 44px;
+    text-align: center;
+    background: rgba(122, 184, 212, 0.08);
+    color: #7ab8d4;
+    font-size: 15px;
+    border: 1px dashed rgba(122, 184, 212, 0.3);
+    border-radius: $radius-md;
+    margin: 0;
+  }
+
+  // ===== Key input form =====
+  &__key-form {
+    animation-delay: 0.15s;
+    animation-fill-mode: both;
+  }
+
+  &__key-field {
+    margin-bottom: 16px;
+  }
+
+  &__key-label {
+    font-size: 13px;
+    color: $text-secondary;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  &__key-picker {
+    width: 100%;
+    height: 42px;
+    line-height: 42px;
+    padding: 0 12px;
+    background: #fff;
+    border: 1px solid $letter-border;
+    border-radius: $radius-md;
+    font-size: 14px;
+    color: $text-primary;
+    position: relative;
+
+    &::after {
+      content: '▾';
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: $text-light;
+      font-size: 12px;
+    }
+  }
+
+  &__key-input {
+    width: 100%;
+    height: 42px;
+    border: 1px solid $letter-border;
+    border-radius: $radius-md;
+    padding: 0 12px;
+    font-size: 14px;
+    color: $text-primary;
+    background: #fff;
+  }
+
+  &__key-form-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+  }
+
+  &__key-btn {
+    flex: 1;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-size: 14px;
+    border-radius: $radius-md;
+    margin: 0;
+
+    &--save {
+      background: linear-gradient(135deg, #7ab8d4, #6aa8c4);
+      color: #fff;
+      border: none;
+    }
+
+    &--cancel {
+      background: transparent;
+      color: $text-secondary;
+      border: 1px solid $letter-border;
+    }
+  }
+
+  // ===== Logout =====
+  &__logout {
+    margin-top: $spacing-lg;
+    margin-bottom: $spacing-lg;
+    animation: fade-in-up 0.4s ease;
+    animation-delay: 0.2s;
+    animation-fill-mode: both;
+  }
+
+  &__logout-btn {
+    width: 100%;
+    height: 44px;
+    line-height: 44px;
+    text-align: center;
+    background: transparent;
+    color: #c47a7a;
+    font-size: 15px;
+    border: 1px solid rgba(196, 122, 122, 0.3);
+    border-radius: $radius-md;
+    margin: 0;
+  }
+
+  // ===== Spacer for tab bar =====
+  &__spacer {
+    height: 80px;
+  }
+}
