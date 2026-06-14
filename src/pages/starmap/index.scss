@@ -1,243 +1,417 @@
 @import '../../styles/variables';
 @import '../../styles/mixins';
 
-$star-color: #c8d8e8;
-$tab-active-bg: rgba(200, 216, 232, 0.1);
-$reply-card-bg: rgba(255, 248, 235, 0.06);
-$reply-card-border: rgba(200, 216, 232, 0.15);
+// ============================================
+// StarMap — Personal Constellation Page
+// Theme: Night sky with constellation header
+// ============================================
 
 .starmap {
-  padding: 0;
   min-height: 100vh;
   position: relative;
+  padding: 0;
 
   @include respond-to('tablet') {
     max-width: 900px;
     margin: 0 auto;
   }
 
+  // ============================================
+  // Header & Constellation
+  // ============================================
   &__header {
-    padding: 48px 24px 12px;
-    text-align: center;
     position: relative;
+    padding: 60px 24px 8px;
+    text-align: center;
     z-index: 2;
+  }
+
+  &__constellation {
+    position: relative;
+    width: 100%;
+    height: 80px;
+    margin: 0 auto 20px;
+
+    @include respond-to('tablet') {
+      height: 100px;
+    }
+  }
+
+  // Constellation stars — fixed positioned dots with glow
+  &__star {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #e8f0ff;
+    box-shadow: 0 0 8px 2px rgba(200, 216, 232, 0.5);
+    animation: star-twinkle 2.4s ease-in-out infinite alternate;
+
+    @include respond-to('tablet') {
+      width: 7px;
+      height: 7px;
+      box-shadow: 0 0 10px 3px rgba(200, 216, 232, 0.5);
+    }
+
+    // Position each star in an arc pattern
+    &--1 { left: 15%; top: 30%; animation-delay: 0.0s; }
+    &--2 { left: 28%; top: 18%; animation-delay: 0.4s; }
+    &--3 { left: 42%; top: 25%; animation-delay: 0.8s; }
+    &--4 { left: 55%; top: 35%; animation-delay: 1.2s; }
+    &--5 { left: 68%; top: 22%; animation-delay: 1.6s; }
+    &--6 { left: 80%; top: 30%; animation-delay: 2.0s; }
+    &--7 { left: 92%; top: 18%; animation-delay: 2.4s; }
+
+    // Slight size variation
+    &:nth-child(odd) {
+      width: 7px;
+      height: 7px;
+      box-shadow: 0 0 10px 3px rgba(200, 216, 232, 0.6);
+
+      @include respond-to('tablet') {
+        width: 8px;
+        height: 8px;
+      }
+    }
+
+    &:nth-child(3n) {
+      box-shadow: 0 0 6px 1px rgba(200, 216, 232, 0.4);
+    }
+  }
+
+  // SVG constellation connection lines
+  &__lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
   }
 
   &__title {
     font-family: $font-hand;
-    font-size: 28px;
+    font-size: 24px;
     color: #c8d8e8;
     display: block;
-    margin-bottom: 8px;
-    text-shadow: 0 0 20px rgba(200, 216, 232, 0.3);
+    margin-bottom: 6px;
+    text-shadow: 0 0 20px rgba(200, 216, 232, 0.25);
+    letter-spacing: 4px;
 
     @include respond-to('tablet') {
-      font-size: 32px;
-      text-shadow: 0 0 30px rgba(200, 216, 232, 0.4);
+      font-size: 28px;
+      letter-spacing: 6px;
+      text-shadow: 0 0 30px rgba(200, 216, 232, 0.35);
     }
   }
 
   &__subtitle {
-    font-size: 13px;
-    color: #8a9aaa;
+    font-size: 12px;
+    color: #7a8a9a;
     display: block;
-  }
-
-  // Star decorations
-  &__star {
-    position: absolute;
-    color: $star-color;
-    pointer-events: none;
-    animation: twinkle 2s ease-in-out infinite alternate;
-    z-index: 0;
-  }
-
-  // Tabs
-  &__tabs {
-    display: flex;
-    padding: 16px 24px 8px;
-    position: relative;
-    z-index: 2;
-    gap: 12px;
+    letter-spacing: 2px;
 
     @include respond-to('tablet') {
-      padding: 20px 0 8px;
-      gap: 16px;
+      font-size: 13px;
+    }
+  }
+
+  // ============================================
+  // Stats Bar
+  // ============================================
+  &__stats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px 8px;
+    gap: 0;
+    position: relative;
+    z-index: 2;
+
+    @include respond-to('tablet') {
+      padding: 16px 0 8px;
+    }
+  }
+
+  &__stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 20px;
+
+    @include respond-to('tablet') {
+      padding: 0 32px;
+    }
+  }
+
+  &__stat-number {
+    font-size: 22px;
+    font-weight: 600;
+    color: #d8e8f8;
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+
+    @include respond-to('tablet') {
+      font-size: 26px;
+    }
+  }
+
+  &__stat-label {
+    font-size: 11px;
+    color: #7a8a9a;
+    letter-spacing: 2px;
+    margin-top: 2px;
+  }
+
+  &__stat-divider {
+    width: 1px;
+    height: 32px;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(200, 216, 232, 0.2) 50%,
+      transparent 100%
+    );
+
+    @include respond-to('tablet') {
+      height: 36px;
+    }
+  }
+
+  // ============================================
+  // Tabs
+  // ============================================
+  &__tabs {
+    display: flex;
+    position: relative;
+    z-index: 2;
+    margin: 4px 24px 0;
+    border-bottom: 1px solid rgba(200, 216, 232, 0.08);
+
+    @include respond-to('tablet') {
+      margin: 8px 0 0;
     }
   }
 
   &__tab {
     flex: 1;
-    padding: 10px 0;
-    text-align: center;
-    border-radius: $radius-lg;
-    transition: all $transition-fast;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 0;
+    position: relative;
     cursor: pointer;
+    transition: all $transition-fast;
 
-    &--active {
-      background: $tab-active-bg;
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      border-radius: 1px;
+      background: rgba(200, 216, 232, 0.5);
+      transition: all $transition-normal;
+      transform: translateX(-50%);
+    }
+
+    &--active::after {
+      width: 32px;
+      background: rgba(200, 216, 232, 0.7);
+      box-shadow: 0 0 8px rgba(200, 216, 232, 0.3);
+
+      @include respond-to('tablet') {
+        width: 48px;
+      }
     }
   }
 
-  &__tab-text {
+  &__tab-label {
     font-size: 14px;
-    color: #8a9aaa;
+    color: #7a8a9a;
     transition: color $transition-fast;
 
     .starmap__tab--active & {
       color: #c8d8e8;
-      font-weight: 500;
+    }
+
+    @include respond-to('tablet') {
+      font-size: 15px;
     }
   }
 
-  // Content area
-  &__content {
-    position: relative;
-    z-index: 2;
+  &__tab-count {
+    font-size: 11px;
+    color: #5a6a7a;
+    background: rgba(200, 216, 232, 0.06);
+    padding: 1px 8px;
+    border-radius: 10px;
+    transition: all $transition-fast;
+
+    .starmap__tab--active & {
+      color: #8a9aaa;
+      background: rgba(200, 216, 232, 0.12);
+    }
   }
 
+  // ============================================
+  // Content List
+  // ============================================
   &__list {
-    height: calc(100vh - 240px);
+    height: calc(100vh - 280px);
+    position: relative;
+    z-index: 2;
 
     @include respond-to('tablet') {
       height: auto;
-      min-height: calc(100vh - 260px);
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      padding: 0 0 100px;
-      align-content: flex-start;
+      min-height: calc(100vh - 320px);
     }
   }
 
-  // Loading
-  &__loading {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-top: 120px;
-  }
-
-  &__loading-text {
-    font-size: 14px;
-    color: #8a9aaa;
-  }
-
-  // Empty state
-  &__empty {
+  // ============================================
+  // Status Messages (Loading + Empty)
+  // ============================================
+  &__status {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 120px;
+    justify-content: center;
+    padding-top: 100px;
 
     @include respond-to('tablet') {
-      padding-top: 100px;
+      padding-top: 80px;
     }
   }
 
-  &__empty-icon {
-    font-size: 48px;
+  &__status-icon {
+    font-size: 40px;
     margin-bottom: 16px;
+    display: block;
   }
 
-  &__empty-text {
-    font-size: 16px;
-    color: #c8d8e8;
-    margin-bottom: 8px;
+  &__status-text {
+    font-size: 14px;
+    color: #8a9aaa;
+    letter-spacing: 1px;
   }
 
-  &__empty-hint {
-    font-size: 13px;
-    color: #7a8a9a;
-    text-align: center;
-    padding: 0 40px;
+  // ============================================
+  // Item Grid (2-column on desktop)
+  // ============================================
+  &__grid {
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    @include respond-to('tablet') {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      padding: 20px 0 100px;
+    }
   }
 
-  // Reply card (night mode adapted letter-card style)
-  &__reply-card {
-    background: $reply-card-bg;
-    border: 1px solid $reply-card-border;
-    border-radius: $radius-md;
-    padding: 16px;
-    margin: 8px 16px;
+  // ============================================
+  // Reply Items
+  // ============================================
+  &__reply-item {
     position: relative;
-    animation: fade-in-up 0.3s ease both;
-    transition: transform 0.2s ease, border-color 0.2s ease;
+    overflow: hidden;
+    padding: 18px 20px;
+    border-radius: $radius-md;
+    background: rgba(255, 248, 235, 0.04);
+    border: 1px solid rgba(200, 216, 232, 0.08);
+    transition: all $transition-normal;
+    animation: fade-in-up 0.4s ease both;
 
     &:hover {
-      border-color: rgba(200, 216, 232, 0.3);
-      transform: translateY(-1px);
+      border-color: rgba(200, 216, 232, 0.18);
+      background: rgba(255, 248, 235, 0.06);
     }
 
     @include respond-to('tablet') {
-      margin: 0;
-      width: calc(50% - 8px);
-      padding: 20px;
+      padding: 20px 24px;
     }
 
-    @include respond-to('desktop') {
-      padding: 24px;
-    }
-  }
-
-  &__reply-type {
-    margin-bottom: 8px;
-  }
-
-  &__reply-type-tag {
-    display: inline-flex;
-    align-items: center;
-    padding: 2px 10px;
-    border-radius: 20px;
-    font-size: 11px;
-
-    &--user {
-      background: rgba(122, 184, 212, 0.15);
-      color: #7ab8d4;
-      border: 1px solid rgba(122, 184, 212, 0.25);
-    }
-
-    &--ai {
-      background: rgba(200, 180, 150, 0.15);
-      color: #d4b87a;
-      border: 1px solid rgba(200, 180, 150, 0.25);
+    // Subtle gradient accent on the left edge
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3px;
+      height: 100%;
+      background: linear-gradient(
+        180deg,
+        rgba(200, 216, 232, 0.15) 0%,
+        rgba(200, 216, 232, 0.05) 100%
+      );
+      border-radius: 0 2px 2px 0;
     }
   }
 
   &__reply-content {
-    margin-bottom: 10px;
-  }
-
-  &__reply-text {
     font-family: $font-hand;
     font-size: 14px;
-    line-height: 1.6;
-    color: #c8d8e8;
+    line-height: 1.7;
+    color: #b8c8d8;
+    display: block;
+    margin-bottom: 12px;
     word-break: break-word;
+    letter-spacing: 0.5px;
 
     @include respond-to('tablet') {
       font-size: 15px;
-      line-height: 1.7;
+      line-height: 1.8;
     }
   }
 
-  &__reply-meta {
+  &__reply-footer {
     display: flex;
-    justify-content: flex-end;
     align-items: center;
+    justify-content: space-between;
+  }
+
+  &__reply-tag {
+    font-size: 11px;
+    color: #7a8a9a;
+    letter-spacing: 1px;
   }
 
   &__reply-time {
     font-size: 11px;
-    color: #7a8a9a;
+    color: #5a6a7a;
   }
 
-  // Spacer for tab bar
+  // ============================================
+  // Spacer
+  // ============================================
   &__spacer {
-    height: 80px;
+    height: 120px;
 
     @include respond-to('tablet') {
-      height: 40px;
+      height: 60px;
     }
+  }
+}
+
+// ============================================
+// Animations
+// ============================================
+
+@keyframes star-twinkle {
+  0% {
+    opacity: 0.4;
+    transform: scale(0.8);
+    box-shadow: 0 0 4px 1px rgba(200, 216, 232, 0.3);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.15);
+    box-shadow: 0 0 12px 4px rgba(200, 216, 232, 0.6);
   }
 }

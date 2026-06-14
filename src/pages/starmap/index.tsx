@@ -10,221 +10,162 @@ import { formatTimeAgo } from '../../utils/time'
 import type { Regret, Reply } from '../../types'
 import './index.scss'
 
-interface StarConfig {
-  left: string
-  top: string
-  opacity: number
-  size: string
-  delay: number
-}
-
-interface StarmapState {
+interface StarMapState {
   regrets: Regret[]
   replies: Reply[]
+  stats: { regrets_count: number; replies_count: number }
   loading: boolean
   activeTab: 'regrets' | 'replies'
 }
 
-function generateStars(count: number): StarConfig[] {
-  const stars: StarConfig[] = []
-  for (let i = 0; i < count; i++) {
-    stars.push({
-      left: `${Math.random() * 100}%`,
-      top: `${Math.random() * 60}%`,
-      opacity: 0.3 + Math.random() * 0.7,
-      size: `${10 + Math.random() * 16}px`,
-      delay: Math.random() * 5,
-    })
-  }
-  return stars
-}
-
-class Starmap extends Component<{}, StarmapState> {
-  private stars: StarConfig[] = generateStars(30)
-
-  state: StarmapState = {
+class StarMap extends Component<{}, StarMapState> {
+  state: StarMapState = {
     regrets: [],
     replies: [],
+    stats: { regrets_count: 0, replies_count: 0 },
     loading: true,
     activeTab: 'regrets',
   }
 
-  componentDidMount() {
-    this.loadData()
+  async componentDidMount() {
+    const user = useUserStore.getState().user
+    if (!user) return
+    const [regrets, replies] = await Promise.all([
+      fetchUserRegrets(user.id),
+      fetchUserReplies(user.id),
+    ])
+    this.setState({
+      regrets,
+      replies,
+      stats: { regrets_count: regrets.length, replies_count: replies.length },
+      loading: false,
+    })
   }
 
   componentDidShow() {
-    this.loadData()
-  }
-
-  loadData = async () => {
-    const user = useUserStore.getState().user
-    if (!user) {
-      this.setState({ loading: false })
-      return
+    if (!this.state.loading) {
+      const user = useUserStore.getState().user
+      if (user) {
+        Promise.all([
+          fetchUserRegrets(user.id),
+          fetchUserReplies(user.id),
+        ]).then(([regrets, replies]) => {
+          this.setState({ regrets, replies, stats: { regrets_count: regrets.length, replies_count: replies.length } })
+        })
+      }
     }
-
-    this.setState({ loading: true })
-
-    try {
-      const [regrets, replies] = await Promise.all([
-        fetchUserRegrets(user.id),
-        fetchUserReplies(user.id),
-      ])
-      this.setState({ regrets, replies, loading: false })
-    } catch {
-      this.setState({ loading: false })
-    }
-  }
-
-  switchTab = (tab: 'regrets' | 'replies') => {
-    this.setState({ activeTab: tab })
-  }
-
-  renderStars() {
-    return this.stars.map((star, i) => (
-      <Text
-        key={i}
-        className='starmap__star'
-        style={{
-          left: star.left,
-          top: star.top,
-          opacity: star.opacity,
-          fontSize: star.size,
-          animationDelay: `${star.delay}s`,
-        }}
-      >
-        ✦
-      </Text>
-    ))
-  }
-
-  renderTabs() {
-    const { activeTab, regrets, replies } = this.state
-
-    return (
-      <View className='starmap__tabs'>
-        <View
-          className={`starmap__tab ${activeTab === 'regrets' ? 'starmap__tab--active' : ''}`}
-          onClick={() => this.switchTab('regrets')}
-        >
-          <Text className='starmap__tab-text'>
-            我的遗憾 ({regrets.length})
-          </Text>
-        </View>
-        <View
-          className={`starmap__tab ${activeTab === 'replies' ? 'starmap__tab--active' : ''}`}
-          onClick={() => this.switchTab('replies')}
-        >
-          <Text className='starmap__tab-text'>
-            我的回应 ({replies.length})
-          </Text>
-        </View>
-      </View>
-    )
-  }
-
-  renderRegrets() {
-    const { regrets, loading } = this.state
-
-    if (loading && regrets.length === 0) {
-      return (
-        <View className='starmap__loading'>
-          <Text className='starmap__loading-text'>加载中...</Text>
-        </View>
-      )
-    }
-
-    if (regrets.length === 0) {
-      return (
-        <View className='starmap__empty'>
-          <Text className='starmap__empty-icon'>💫</Text>
-          <Text className='starmap__empty-text'>还没有投放遗憾</Text>
-          <Text className='starmap__empty-hint'>去「创作」页面投放你的第一份遗憾吧</Text>
-        </View>
-      )
-    }
-
-    return (
-      <ScrollView className='starmap__list' scrollY>
-        {regrets.map((regret) => (
-          <RegretCard key={regret.id} regret={regret} variant='compact' />
-        ))}
-        <View className='starmap__spacer' />
-      </ScrollView>
-    )
-  }
-
-  renderReplies() {
-    const { replies, loading } = this.state
-
-    if (loading && replies.length === 0) {
-      return (
-        <View className='starmap__loading'>
-          <Text className='starmap__loading-text'>加载中...</Text>
-        </View>
-      )
-    }
-
-    if (replies.length === 0) {
-      return (
-        <View className='starmap__empty'>
-          <Text className='starmap__empty-icon'>🌙</Text>
-          <Text className='starmap__empty-text'>还没有回应过遗憾</Text>
-          <Text className='starmap__empty-hint'>去「主页」回应那些触动你的遗憾吧</Text>
-        </View>
-      )
-    }
-
-    return (
-      <ScrollView className='starmap__list' scrollY>
-        {replies.map((reply) => (
-          <View key={reply.id} className='starmap__reply-card'>
-            <View className='starmap__reply-type'>
-              <Text className={`starmap__reply-type-tag starmap__reply-type-tag--${reply.type}`}>
-                {reply.type === 'ai' ? 'AI 回应' : '我的回应'}
-              </Text>
-            </View>
-            <View className='starmap__reply-content'>
-              <Text className='starmap__reply-text'>{reply.content}</Text>
-            </View>
-            <View className='starmap__reply-meta'>
-              <Text className='starmap__reply-time'>
-                {formatTimeAgo(reply.created_at)}
-              </Text>
-            </View>
-          </View>
-        ))}
-        <View className='starmap__spacer' />
-      </ScrollView>
-    )
   }
 
   render() {
-    const { regrets, replies } = this.state
-
+    const { regrets, replies, stats, loading, activeTab } = this.state
     return (
       <AuthGuard>
         <OceanBackground mode='night'>
           <View className='starmap'>
-            {/* Stars decoration */}
-            {this.renderStars()}
-
-            {/* Header */}
+            {/* Header with constellation */}
             <View className='starmap__header'>
-              <Text className='starmap__title'>🌌 我的星群</Text>
-              <Text className='starmap__subtitle'>
-                {regrets.length + replies.length} 段记忆
-              </Text>
+              <View className='starmap__constellation'>
+                <View className='starmap__star starmap__star--1' />
+                <View className='starmap__star starmap__star--2' />
+                <View className='starmap__star starmap__star--3' />
+                <View className='starmap__star starmap__star--4' />
+                <View className='starmap__star starmap__star--5' />
+                <View className='starmap__star starmap__star--6' />
+                <View className='starmap__star starmap__star--7' />
+                <svg className='starmap__lines' viewBox='0 0 200 100' preserveAspectRatio='none'>
+                  <line x1='30' y1='30' x2='56' y2='18' stroke='rgba(200,216,232,0.12)' strokeWidth='0.8' />
+                  <line x1='56' y1='18' x2='84' y2='25' stroke='rgba(200,216,232,0.12)' strokeWidth='0.8' />
+                  <line x1='84' y1='25' x2='110' y2='35' stroke='rgba(200,216,232,0.12)' strokeWidth='0.8' />
+                  <line x1='110' y1='35' x2='136' y2='22' stroke='rgba(200,216,232,0.12)' strokeWidth='0.8' />
+                  <line x1='136' y1='22' x2='160' y2='30' stroke='rgba(200,216,232,0.12)' strokeWidth='0.8' />
+                  <line x1='160' y1='30' x2='184' y2='18' stroke='rgba(200,216,232,0.12)' strokeWidth='0.8' />
+                </svg>
+              </View>
+              <Text className='starmap__title'>我的星群</Text>
+              <Text className='starmap__subtitle'>每一颗星都是一段故事</Text>
             </View>
 
-            {/* Tabs */}
-            {this.renderTabs()}
+            {/* User stats */}
+            <View className='starmap__stats'>
+              <View className='starmap__stat'>
+                <Text className='starmap__stat-number'>{stats.regrets_count}</Text>
+                <Text className='starmap__stat-label'>遗憾</Text>
+              </View>
+              <View className='starmap__stat-divider' />
+              <View className='starmap__stat'>
+                <Text className='starmap__stat-number'>{stats.replies_count}</Text>
+                <Text className='starmap__stat-label'>回应</Text>
+              </View>
+              <View className='starmap__stat-divider' />
+              <View className='starmap__stat'>
+                <Text className='starmap__stat-number'>{stats.regrets_count + stats.replies_count}</Text>
+                <Text className='starmap__stat-label'>星数</Text>
+              </View>
+            </View>
+
+            {/* Tab bar */}
+            <View className='starmap__tabs'>
+              <View
+                className={`starmap__tab ${activeTab === 'regrets' ? 'starmap__tab--active' : ''}`}
+                onClick={() => this.setState({ activeTab: 'regrets' })}
+              >
+                <Text className='starmap__tab-label'>我的遗憾</Text>
+                <Text className='starmap__tab-count'>{stats.regrets_count}</Text>
+              </View>
+              <View
+                className={`starmap__tab ${activeTab === 'replies' ? 'starmap__tab--active' : ''}`}
+                onClick={() => this.setState({ activeTab: 'replies' })}
+              >
+                <Text className='starmap__tab-label'>我的回应</Text>
+                <Text className='starmap__tab-count'>{stats.replies_count}</Text>
+              </View>
+            </View>
 
             {/* Content */}
-            <View className='starmap__content'>
-              {this.state.activeTab === 'regrets' ? this.renderRegrets() : this.renderReplies()}
-            </View>
+            <ScrollView className='starmap__list' scrollY>
+              {loading ? (
+                <View className='starmap__status'>
+                  <Text className='starmap__status-text'>正在仰望星空...</Text>
+                </View>
+              ) : activeTab === 'regrets' ? (
+                regrets.length === 0 ? (
+                  <View className='starmap__status'>
+                    <Text className='starmap__status-icon'>🌠</Text>
+                    <Text className='starmap__status-text'>还没有遗憾划过天际</Text>
+                  </View>
+                ) : (
+                  <View className='starmap__grid'>
+                    {regrets.map((regret) => (
+                      <RegretCard key={regret.id} regret={regret} variant='compact' />
+                    ))}
+                  </View>
+                )
+              ) : (
+                replies.length === 0 ? (
+                  <View className='starmap__status'>
+                    <Text className='starmap__status-icon'>💫</Text>
+                    <Text className='starmap__status-text'>还没有回应过别人</Text>
+                  </View>
+                ) : (
+                  <View className='starmap__grid'>
+                    {replies.map((reply) => (
+                      <View key={reply.id} className='starmap__reply-item'>
+                        <Text className='starmap__reply-content'>{reply.content}</Text>
+                        <View className='starmap__reply-footer'>
+                          <Text className='starmap__reply-tag'>
+                            {reply.type === 'ai' ? '✨ AI' : '✍️ 手写'}
+                          </Text>
+                          <Text className='starmap__reply-time'>
+                            {formatTimeAgo(reply.created_at)}
+                          </Text>
+                        </View>
+                      </View>
+                    ))}
+                  </View>
+                )
+              )}
+              <View className='starmap__spacer' />
+            </ScrollView>
           </View>
         </OceanBackground>
       </AuthGuard>
@@ -232,4 +173,4 @@ class Starmap extends Component<{}, StarmapState> {
   }
 }
 
-export default Starmap
+export default StarMap
