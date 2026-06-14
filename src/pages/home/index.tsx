@@ -7,6 +7,7 @@ import { supabase } from '../../services/supabase'
 import { useRegretStore } from '../../stores/useRegretStore'
 import { useModalStore } from '../../stores/useModalStore'
 import { useUserStore } from '../../stores/useUserStore'
+import { useThemeStore } from '../../stores/useThemeStore'
 import { getStoredApiKey, generateAIResponse } from '../../services/ai'
 import { detectEmotion } from '../../utils/emotion'
 import { randomRegretColor } from '../../types'
@@ -35,8 +36,10 @@ function shufflePick(arr: string[], n: number): string[] {
 class Home extends Component<{}, {}> {
   private unsubscribe: (() => void) | null = null
   private timer: ReturnType<typeof setInterval> | null = null
+  private themeUnsub: (() => void) | null = null
 
   componentDidMount() {
+    this.themeUnsub = useThemeStore.subscribe(() => this.setState({}))
     useRegretStore.getState().loadRegrets()
     this.unsubscribe = useRegretStore.subscribe(() => {
       this.setState({})
@@ -123,6 +126,10 @@ class Home extends Component<{}, {}> {
       this.unsubscribe()
       this.unsubscribe = null
     }
+    if (this.themeUnsub) {
+      this.themeUnsub()
+      this.themeUnsub = null
+    }
   }
 
   componentDidShow() {
@@ -148,9 +155,10 @@ class Home extends Component<{}, {}> {
 
   render() {
     const { regrets, loading } = useRegretStore.getState()
+    const mode = useThemeStore.getState().mode
 
     return (
-      <OceanBackground mode='day'>
+      <OceanBackground mode={mode}>
         <View className='home'>
           {/* Header */}
           <View className='home__header'>
