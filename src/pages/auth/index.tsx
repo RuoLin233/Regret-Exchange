@@ -17,11 +17,21 @@ interface AuthState {
 }
 
 class Auth extends Component<{}, AuthState> {
+  private themeUnsub: (() => void) | null = null
+
   // 本地开发模式：已有用户则自动跳转首页
   componentDidMount() {
+    this.themeUnsub = useThemeStore.subscribe(() => this.setState({}))
     const { user } = useUserStore.getState()
     if (user) {
       switchTab({ url: '/pages/home/index' })
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.themeUnsub) {
+      this.themeUnsub()
+      this.themeUnsub = null
     }
   }
 

@@ -33,6 +33,8 @@ interface ProfileState {
 }
 
 class Profile extends Component<{}, ProfileState> {
+  private themeUnsub: (() => void) | null = null
+
   state: ProfileState = {
     nickname: '',
     editingNickname: '',
@@ -46,7 +48,15 @@ class Profile extends Component<{}, ProfileState> {
   }
 
   componentDidMount() {
+    this.themeUnsub = useThemeStore.subscribe(() => this.setState({}))
     this.loadData()
+  }
+
+  componentWillUnmount() {
+    if (this.themeUnsub) {
+      this.themeUnsub()
+      this.themeUnsub = null
+    }
   }
 
   componentDidShow() {

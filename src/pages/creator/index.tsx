@@ -34,6 +34,7 @@ interface CreatorState {
 
 class Creator extends Component<{}, CreatorState> {
   private aiEmotionTimer: number | null = null
+  private themeUnsub: (() => void) | null = null
 
   state: CreatorState = {
     content: '',
@@ -42,6 +43,17 @@ class Creator extends Component<{}, CreatorState> {
     selectedColor: 'ocean',
     submitting: false,
     charCount: 0,
+  }
+
+  componentDidMount() {
+    this.themeUnsub = useThemeStore.subscribe(() => this.setState({}))
+  }
+
+  componentWillUnmount() {
+    if (this.themeUnsub) {
+      this.themeUnsub()
+      this.themeUnsub = null
+    }
   }
 
   handleContentInput = (e: any) => {
