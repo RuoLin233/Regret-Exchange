@@ -1,0 +1,150 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.creator {
+  padding: 0 20px;
+  min-height: 100vh;
+
+  &__header {
+    padding: 48px 4px 32px;
+    text-align: center;
+  }
+
+  &__title {
+    font-family: $font-hand;
+    font-size: 28px;
+    color: $text-primary;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  &__subtitle {
+    font-size: 13px;
+    color: $text-secondary;
+    display: block;
+  }
+
+  // Letter-paper card wrapping the textarea
+  &__paper {
+    @include letter-card;
+    padding: 20px;
+    margin-bottom: $spacing-lg;
+    animation: fade-in-up 0.5s ease;
+  }
+
+  &__textarea {
+    width: 100%;
+    min-height: 200px;
+    font-family: $font-hand;
+    font-size: 16px;
+    line-height: 1.8;
+    color: $text-primary;
+    background: transparent;
+    border: none;
+    outline: none;
+    resize: none;
+    padding: 0;
+  }
+
+  &__placeholder {
+    color: $text-light;
+    font-family: $font-hand;
+    font-size: 16px;
+  }
+
+  &__paper-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: $spacing-md;
+    padding-top: $spacing-sm;
+    border-top: 1px solid $letter-border;
+  }
+
+  &__emotion-area {
+    flex: 1;
+    min-height: 24px;
+  }
+
+  &__emotion-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 12px;
+    border-radius: 20px;
+    border: 1px solid;
+    font-size: 12px;
+    animation: fade-in-up 0.3s ease;
+  }
+
+  &__emotion-icon {
+    font-size: 10px;
+  }
+
+  &__charcount {
+    font-size: 12px;
+    color: $text-light;
+    flex-shrink: 0;
+
+    &--warn {
+      color: #c47a7a;
+    }
+  }
+
+  // Anonymous toggle row
+  &__anonymous {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: $letter-bg;
+    border: 1px solid $letter-border;
+    border-radius: $radius-md;
+    padding: 14px 16px;
+    margin-bottom: $spacing-lg;
+    animation: fade-in-up 0.5s ease;
+    animation-delay: 0.1s;
+    animation-fill-mode: both;
+  }
+
+  &__anonymous-info {
+    flex: 1;
+    margin-right: $spacing-md;
+  }
+
+  &__anonymous-label {
+    font-size: 15px;
+    color: $text-primary;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  &__anonymous-desc {
+    font-size: 12px;
+    color: $text-secondary;
+    display: block;
+  }
+
+  // Submit button
+  &__submit {
+    width: 100%;
+    height: 48px;
+    line-height: 48px;
+    text-align: center;
+    background: linear-gradient(135deg, $gold-light, darken($gold-light, 10%));
+    color: #4a5a6a;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: $radius-lg;
+    border: none;
+    box-shadow: 0 4px 16px $gold-glow;
+    margin-bottom: 40px;
+    animation: fade-in-up 0.5s ease;
+    animation-delay: 0.2s;
+    animation-fill-mode: both;
+
+    &--disabled {
+      opacity: 0.5;
+      box-shadow: none;
+    }
+  }
+}
