@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.cache/
+.DS_Store
+*.swp
+*.swo
+*.swn
+Thumbs.db
+*.local
+project.config.json
+project.tt.json
+project.swan.json
+*.log
+.superpowers/
+.swc/
+.env
