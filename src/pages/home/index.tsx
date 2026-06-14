@@ -1,5 +1,5 @@
 import { Component } from 'react'
-import { View, Text, ScrollView } from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
 import OceanBackground from '../../components/OceanBackground'
 import RegretCard from '../../components/RegretCard'
 import RegretDetailModal from '../../components/RegretDetailModal'
@@ -68,12 +68,8 @@ class Home extends Component<{}, HomeState> {
     })
   }
 
-  handleRefresh = () => {
-    useRegretStore.getState().refreshRegrets()
-  }
-
   render() {
-    const { regrets, loading, refreshing } = useRegretStore.getState()
+    const { regrets, loading } = useRegretStore.getState()
     const { selectedRegret, modalVisible } = this.state
 
     return (
@@ -97,13 +93,7 @@ class Home extends Component<{}, HomeState> {
               <Text className='home__empty-hint'>去「创作」页面投放你的第一份遗憾吧</Text>
             </View>
           ) : (
-            <ScrollView
-              className='home__list'
-              scrollY
-              refresherEnabled
-              refresherTriggered={refreshing}
-              onRefresherRefresh={this.handleRefresh}
-            >
+            <View className='home__list'>
               {regrets.map((regret) => (
                 <RegretCard
                   key={regret.id}
@@ -114,7 +104,7 @@ class Home extends Component<{}, HomeState> {
               ))}
               {/* Bottom spacer for tab bar */}
               <View className='home__spacer' />
-            </ScrollView>
+            </View>
           )}
 
           {/* Detail Modal */}

@@ -2,65 +2,80 @@
 @import '../../styles/mixins';
 
 .home {
-  padding: 0;
+  padding-top: 50px;
   min-height: 100vh;
 
   &__header {
-    padding: 48px 24px 24px;
     text-align: center;
+    padding: $spacing-lg $spacing-md $spacing-sm;
+
+    @include respond-to('tablet') {
+      padding: $spacing-xl $spacing-lg $spacing-md;
+    }
   }
 
   &__title {
-    font-family: $font-hand;
-    font-size: 28px;
+    font-size: 22px;
+    font-weight: 700;
     color: $text-primary;
-    display: block;
-    margin-bottom: 8px;
+    letter-spacing: 2px;
+
+    @include respond-to('tablet') {
+      font-size: 28px;
+    }
   }
 
   &__subtitle {
+    display: block;
     font-size: 13px;
     color: $text-secondary;
-    display: block;
+    margin-top: 6px;
+    font-family: $font-hand;
+    letter-spacing: 1px;
+
+    @include respond-to('tablet') {
+      font-size: 15px;
+    }
   }
 
   &__list {
-    height: calc(100vh - 160px);
+    padding: $spacing-sm 0 140px;
+    // On tablet+, use 2-column grid
+    @include respond-to('tablet') {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      padding: $spacing-md $spacing-md 140px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
   }
 
-  &__loading {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-top: 120px;
-  }
-
-  &__loading-text {
-    font-size: 14px;
-    color: $text-secondary;
-  }
-
-  &__empty {
+  &__loading, &__empty {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 120px;
+    justify-content: center;
+    padding: 80px 20px;
+    color: $text-secondary;
+    grid-column: 1 / -1;
   }
 
   &__empty-icon {
     font-size: 48px;
     margin-bottom: 16px;
+    opacity: 0.6;
   }
 
   &__empty-text {
-    font-size: 16px;
-    color: $text-primary;
+    font-size: 15px;
     margin-bottom: 8px;
   }
 
   &__empty-hint {
     font-size: 13px;
     color: $text-light;
+    font-family: $font-hand;
   }
 
   &__spacer {
