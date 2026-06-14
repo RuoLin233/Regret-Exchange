@@ -1,0 +1,58 @@
+@import '../../styles/variables';
+
+.ocean-bg {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+
+  &--day {
+    background: linear-gradient(180deg, $ocean-sky-top 0%, $ocean-sky-mid 30%, $ocean-sky-bottom 60%, $ocean-sand 100%);
+  }
+
+  &--night {
+    background: linear-gradient(180deg, $night-sky-top 0%, $night-sky-mid 40%, $night-sky-bottom 100%);
+  }
+
+  &__wave {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 60'%3E%3Cpath fill='rgba(255,255,255,0.15)' d='M0,30 C360,60 720,0 1080,30 C1260,45 1350,30 1440,30 L1440,60 L0,60 Z'/%3E%3C/svg%3E") repeat-x;
+    background-size: 1440px 60px;
+    animation: wave 4s ease-in-out infinite alternate;
+
+    &--1 { bottom: 40px; opacity: 0.6; animation-duration: 4s; }
+    &--2 { bottom: 20px; opacity: 0.4; animation-duration: 5s; animation-delay: -1s; }
+    &--3 { bottom: 0; opacity: 0.3; animation-duration: 6s; animation-delay: -2s; }
+  }
+
+  &__sparkle {
+    position: absolute;
+    top: 30%;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: radial-gradient(ellipse at 50% 0%, rgba(255, 215, 109, 0.08) 0%, transparent 70%);
+    animation: sparkle 3s ease-in-out infinite alternate;
+  }
+
+  &__content {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    padding-bottom: 80px;
+  }
+}
+
+@keyframes wave {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(-10px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes sparkle {
+  0% { opacity: 0.5; transform: translateX(-5px); }
+  100% { opacity: 1; transform: translateX(5px); }
+}
