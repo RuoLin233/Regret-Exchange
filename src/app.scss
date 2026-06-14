@@ -1,1 +1,19 @@
-// Global styles for 遗憾交易所
+@import './styles/variables';
+@import './styles/mixins';
+
+page {
+  font-family: $font-body;
+  color: $text-primary;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  background-color: $ocean-sky-top;
+}
+
+view, text {
+  box-sizing: border-box;
+}
+
+// 全局动画类
+.float { animation: float 4s ease-in-out infinite; }
+.fade-in-up { animation: fade-in-up 0.4s ease both; }

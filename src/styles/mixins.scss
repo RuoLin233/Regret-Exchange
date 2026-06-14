@@ -1,0 +1,72 @@
+@import './variables';
+
+@mixin ocean-gradient($mode: 'day') {
+  @if $mode == 'day' {
+    background: linear-gradient(180deg, $ocean-sky-top 0%, $ocean-sky-mid 30%, $ocean-sky-bottom 60%, $ocean-sand 100%);
+  } @else {
+    background: linear-gradient(180deg, $night-sky-top 0%, $night-sky-mid 40%, $night-sky-bottom 100%);
+  }
+}
+
+@mixin letter-card {
+  background: $letter-bg;
+  border: 1px solid $letter-border;
+  border-radius: $radius-md;
+  box-shadow: 0 2px 12px $letter-shadow;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    background: linear-gradient(135deg, transparent 50%, rgba(200, 180, 150, 0.2) 50%);
+    border-bottom-left-radius: $radius-md;
+  }
+}
+
+@mixin emotion-badge($color) {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  background: rgba($color, 0.15);
+  color: $color;
+  border: 1px solid rgba($color, 0.25);
+}
+
+@mixin gold-glow {
+  color: darken($gold-light, 10%);
+  text-shadow: 0 0 8px $gold-glow;
+}
+
+@mixin float-animation($duration: 4s, $delay: 0s) {
+  animation: float $duration ease-in-out infinite;
+  animation-delay: $delay;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-6px) rotate(0.5deg); }
+  50% { transform: translateY(-3px) rotate(-0.5deg); }
+  75% { transform: translateY(-8px) rotate(0.3deg); }
+}
+
+@keyframes wave {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(-10px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes twinkle {
+  0% { opacity: 0.3; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1.2); }
+}
