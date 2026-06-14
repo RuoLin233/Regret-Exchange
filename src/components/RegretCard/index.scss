@@ -3,7 +3,7 @@
 .regret-card {
   background: $letter-bg;
   border: 1px solid $letter-border;
-  border-left: 4px solid #c4a882;
+  border-left: 6px solid #c4a882;
   border-radius: $radius-md;
   box-shadow: 0 2px 12px $letter-shadow;
   position: relative;
@@ -26,6 +26,7 @@
 
   &--floating {
     animation: float 6s ease-in-out infinite;
+    animation-delay: 0.5s;
 
     &:hover {
       transform: translateY(-6px) scale(1.02);

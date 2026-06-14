@@ -55,8 +55,8 @@
     }
 
     .ocean-bg__particle {
-      background: rgba(200, 220, 255, 0.6);
-      box-shadow: 0 0 4px 1px rgba(200, 220, 255, 0.25);
+      background: rgba(180, 220, 255, 0.8);
+      box-shadow: 0 0 8px 3px rgba(150, 200, 255, 0.45), 0 0 16px 6px rgba(100, 160, 255, 0.15);
     }
 
     .ocean-bg__wave--1 { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 80'%3E%3Cpath fill='rgba(140,200,255,0.05)' d='M0,40 C240,80 480,0 720,40 C960,80 1200,0 1440,40 L1440,80 L0,80 Z'/%3E%3C/svg%3E"); }
@@ -170,6 +170,53 @@
   }
 
   // ============================================
+  // Clouds — white blobs floating horizontally (desktop)
+  // ============================================
+  &__cloud {
+    display: none;
+
+    @media (min-width: 768px) {
+      display: block;
+      position: absolute;
+      z-index: 1;
+      pointer-events: none;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      animation: cloud-float 20s ease-in-out infinite alternate;
+    }
+
+    &--1 {
+      width: 160px;
+      height: 50px;
+      top: 10%;
+      left: 5%;
+      border-radius: 50px;
+      animation-duration: 24s;
+      animation-delay: 0s;
+    }
+
+    &--2 {
+      width: 200px;
+      height: 40px;
+      top: 16%;
+      left: 40%;
+      border-radius: 40px;
+      animation-duration: 28s;
+      animation-delay: -6s;
+    }
+
+    &--3 {
+      width: 120px;
+      height: 35px;
+      top: 8%;
+      left: 70%;
+      border-radius: 35px;
+      animation-duration: 22s;
+      animation-delay: -12s;
+    }
+  }
+
+  // ============================================
   // Wave layers — parallax moving bands
   // ============================================
   &__wave {
@@ -246,8 +293,9 @@
 }
 
 @keyframes wave-sway {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-35px); }
+  0%   { transform: translateX(0) translateY(0); }
+  50%  { transform: translateX(-17px) translateY(-2px); }
+  100% { transform: translateX(-35px) translateY(0); }
 }
 
 @keyframes particle-float {
@@ -287,4 +335,10 @@
   70%  { transform: translateY(6px); }
   85%  { transform: translateY(-14px); }
   100% { left: calc(100% + 120px); transform: translateY(0); }
+}
+
+@keyframes cloud-float {
+  0%   { transform: translateX(0); }
+  50%  { transform: translateX(30px); }
+  100% { transform: translateX(-20px); }
 }

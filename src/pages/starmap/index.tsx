@@ -89,12 +89,12 @@ class StarMap extends Component<{}, StarMapState> {
                 <View className='starmap__star starmap__star--6' />
                 <View className='starmap__star starmap__star--7' />
                 <svg className='starmap__lines' viewBox='0 0 200 100' preserveAspectRatio='none'>
-                  <line x1='30' y1='30' x2='56' y2='18' stroke='rgba(200,216,232,0.12)' strokeWidth='0.8' />
-                  <line x1='56' y1='18' x2='84' y2='25' stroke='rgba(200,216,232,0.12)' strokeWidth='0.8' />
-                  <line x1='84' y1='25' x2='110' y2='35' stroke='rgba(200,216,232,0.12)' strokeWidth='0.8' />
-                  <line x1='110' y1='35' x2='136' y2='22' stroke='rgba(200,216,232,0.12)' strokeWidth='0.8' />
-                  <line x1='136' y1='22' x2='160' y2='30' stroke='rgba(200,216,232,0.12)' strokeWidth='0.8' />
-                  <line x1='160' y1='30' x2='184' y2='18' stroke='rgba(200,216,232,0.12)' strokeWidth='0.8' />
+                  <line x1='30' y1='30' x2='56' y2='18' stroke='rgba(200,230,255,0.3)' strokeWidth='0.8' />
+                  <line x1='56' y1='18' x2='84' y2='25' stroke='rgba(200,230,255,0.3)' strokeWidth='0.8' />
+                  <line x1='84' y1='25' x2='110' y2='35' stroke='rgba(200,230,255,0.3)' strokeWidth='0.8' />
+                  <line x1='110' y1='35' x2='136' y2='22' stroke='rgba(200,230,255,0.3)' strokeWidth='0.8' />
+                  <line x1='136' y1='22' x2='160' y2='30' stroke='rgba(200,230,255,0.3)' strokeWidth='0.8' />
+                  <line x1='160' y1='30' x2='184' y2='18' stroke='rgba(200,230,255,0.3)' strokeWidth='0.8' />
                 </svg>
               </View>
               <Text className='starmap__title'>我的星群</Text>

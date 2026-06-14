@@ -164,13 +164,19 @@ class Home extends Component<{}, {}> {
           {/* Content */}
           {loading && regrets.length === 0 ? (
             <View className='home__loading'>
-              <Text className='home__loading-text'>正在打捞海中的遗憾...</Text>
+              <Text className='home__loading-text'>正在打捞海中的遗憾</Text>
+              <View className='home__loading-dots'>
+                <Text className='home__loading-dot'>.</Text>
+                <Text className='home__loading-dot'>.</Text>
+                <Text className='home__loading-dot'>.</Text>
+              </View>
             </View>
           ) : regrets.length === 0 ? (
             <View className='home__empty'>
-              <Text className='home__empty-icon'>🌊</Text>
+              <Text className='home__empty-icon'>🏖️</Text>
               <Text className='home__empty-text'>还没有人投放遗憾</Text>
               <Text className='home__empty-hint'>去「创作」页面投放你的第一份遗憾吧</Text>
+              <Text className='home__empty-hint'>每一份遗憾，都值得被温柔回应</Text>
             </View>
           ) : (
             <ScrollView className='home__list' scrollY>

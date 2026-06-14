@@ -17,7 +17,7 @@ class OceanBackground extends Component<OceanBackgroundProps> {
 
         {/* 波光粼粼粒子 */}
         <View className='ocean-bg__particles'>
-          {Array.from({ length: 15 }).map((_, i) => (
+          {Array.from({ length: 25 }).map((_, i) => (
             <View
               key={i}
               className='ocean-bg__particle'
@@ -36,6 +36,11 @@ class OceanBackground extends Component<OceanBackgroundProps> {
         {/* 海鸥（仅桌面端可见） */}
         <View className='ocean-bg__seagull ocean-bg__seagull--1' />
         <View className='ocean-bg__seagull ocean-bg__seagull--2' />
+
+        {/* 云朵（仅桌面端可见） */}
+        <View className='ocean-bg__cloud ocean-bg__cloud--1' />
+        <View className='ocean-bg__cloud ocean-bg__cloud--2' />
+        <View className='ocean-bg__cloud ocean-bg__cloud--3' />
 
         {/* 波浪层 */}
         <View className='ocean-bg__wave ocean-bg__wave--1' />

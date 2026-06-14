@@ -50,7 +50,7 @@ class RegretCard extends Component<RegretCardProps> {
               borderColor: `${emotionColor}30`,
             }}
           >
-            🐚 {regret.emotion_tag}
+            {regret.emotion_tag}
           </View>
         )}
 

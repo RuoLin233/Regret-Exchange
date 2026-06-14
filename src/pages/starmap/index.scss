@@ -88,6 +88,7 @@
     height: 100%;
     pointer-events: none;
     z-index: 0;
+    animation: constellation-pulse 4s ease-in-out infinite alternate;
   }
 
   &__title {
@@ -301,7 +302,7 @@
   &__delete-btn {
     font-size: 15px;
     cursor: pointer;
-    opacity: 0.5;
+    opacity: 0;
     transition: opacity 0.15s, transform 0.1s;
     padding: 4px 6px;
     user-select: none;
@@ -310,6 +311,15 @@
     line-height: 1;
 
     &:active { transform: scale(1.2); }
+
+    @media (hover: hover) {
+      opacity: 0;
+      &:hover { opacity: 1; }
+    }
+
+    @media (hover: none) {
+      opacity: 0.5;
+    }
   }
 
   &__regret-wrapper {
@@ -320,8 +330,16 @@
       top: 6px;
       right: 6px;
       background: rgba(0,0,0,0.08);
-      opacity: 0.6;
-      &:hover { opacity: 1; background: rgba(200,80,80,0.2); }
+      opacity: 0;
+
+      @media (hover: hover) {
+        opacity: 0;
+        &:hover { opacity: 1; background: rgba(200,80,80,0.2); }
+      }
+
+      @media (hover: none) {
+        opacity: 0.6;
+      }
     }
   }
 
@@ -448,4 +466,10 @@
     transform: scale(1.15);
     box-shadow: 0 0 12px 4px rgba(200, 216, 232, 0.6);
   }
+}
+
+@keyframes constellation-pulse {
+  0% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+  100% { opacity: 0.5; }
 }
