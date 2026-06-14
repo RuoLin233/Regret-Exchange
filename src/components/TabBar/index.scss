@@ -1,0 +1,42 @@
+@import '../../styles/variables';
+
+.tab-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background: rgba(255, 248, 235, 0.95);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid $letter-border;
+  z-index: 100;
+  padding-bottom: env(safe-area-inset-bottom);
+
+  .tab-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 4px 16px;
+    opacity: 0.5;
+    transition: opacity $transition-fast;
+
+    &--active {
+      opacity: 1;
+      .tab-item__icon { transform: scale(1.1); }
+    }
+
+    &__icon {
+      font-size: 20px;
+      transition: transform $transition-fast;
+    }
+
+    &__label {
+      font-size: 10px;
+      color: $text-primary;
+    }
+  }
+}

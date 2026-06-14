@@ -17,3 +17,8 @@ view, text {
 // 全局动画类
 .float { animation: float 4s ease-in-out infinite; }
 .fade-in-up { animation: fade-in-up 0.4s ease both; }
+
+// TabBar 底部间距
+.app-content {
+  padding-bottom: 64px;
+}
