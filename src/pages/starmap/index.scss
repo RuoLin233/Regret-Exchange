@@ -9,6 +9,12 @@ $reply-card-border: rgba(200, 216, 232, 0.15);
 .starmap {
   padding: 0;
   min-height: 100vh;
+  position: relative;
+
+  @include respond-to('tablet') {
+    max-width: 900px;
+    margin: 0 auto;
+  }
 
   &__header {
     padding: 48px 24px 12px;
@@ -24,6 +30,11 @@ $reply-card-border: rgba(200, 216, 232, 0.15);
     display: block;
     margin-bottom: 8px;
     text-shadow: 0 0 20px rgba(200, 216, 232, 0.3);
+
+    @include respond-to('tablet') {
+      font-size: 32px;
+      text-shadow: 0 0 30px rgba(200, 216, 232, 0.4);
+    }
   }
 
   &__subtitle {
@@ -48,6 +59,11 @@ $reply-card-border: rgba(200, 216, 232, 0.15);
     position: relative;
     z-index: 2;
     gap: 12px;
+
+    @include respond-to('tablet') {
+      padding: 20px 0 8px;
+      gap: 16px;
+    }
   }
 
   &__tab {
@@ -82,6 +98,16 @@ $reply-card-border: rgba(200, 216, 232, 0.15);
 
   &__list {
     height: calc(100vh - 240px);
+
+    @include respond-to('tablet') {
+      height: auto;
+      min-height: calc(100vh - 260px);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding: 0 0 100px;
+      align-content: flex-start;
+    }
   }
 
   // Loading
@@ -103,6 +129,10 @@ $reply-card-border: rgba(200, 216, 232, 0.15);
     flex-direction: column;
     align-items: center;
     padding-top: 120px;
+
+    @include respond-to('tablet') {
+      padding-top: 100px;
+    }
   }
 
   &__empty-icon {
@@ -119,6 +149,8 @@ $reply-card-border: rgba(200, 216, 232, 0.15);
   &__empty-hint {
     font-size: 13px;
     color: #7a8a9a;
+    text-align: center;
+    padding: 0 40px;
   }
 
   // Reply card (night mode adapted letter-card style)
@@ -130,6 +162,22 @@ $reply-card-border: rgba(200, 216, 232, 0.15);
     margin: 8px 16px;
     position: relative;
     animation: fade-in-up 0.3s ease both;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+
+    &:hover {
+      border-color: rgba(200, 216, 232, 0.3);
+      transform: translateY(-1px);
+    }
+
+    @include respond-to('tablet') {
+      margin: 0;
+      width: calc(50% - 8px);
+      padding: 20px;
+    }
+
+    @include respond-to('desktop') {
+      padding: 24px;
+    }
   }
 
   &__reply-type {
@@ -166,6 +214,11 @@ $reply-card-border: rgba(200, 216, 232, 0.15);
     line-height: 1.6;
     color: #c8d8e8;
     word-break: break-word;
+
+    @include respond-to('tablet') {
+      font-size: 15px;
+      line-height: 1.7;
+    }
   }
 
   &__reply-meta {
@@ -182,5 +235,9 @@ $reply-card-border: rgba(200, 216, 232, 0.15);
   // Spacer for tab bar
   &__spacer {
     height: 80px;
+
+    @include respond-to('tablet') {
+      height: 40px;
+    }
   }
 }

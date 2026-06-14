@@ -1,4 +1,5 @@
 @import '../../styles/variables';
+@import '../../styles/mixins';
 
 .tab-bar {
   position: fixed;
@@ -9,8 +10,9 @@
   display: flex;
   align-items: center;
   justify-content: space-around;
-  background: rgba(255, 248, 235, 0.95);
-  backdrop-filter: blur(10px);
+  background: rgba(255, 248, 235, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-top: 1px solid $letter-border;
   z-index: 100;
   padding-bottom: env(safe-area-inset-bottom);
@@ -20,23 +22,55 @@
     flex-direction: column;
     align-items: center;
     gap: 2px;
-    padding: 4px 16px;
-    opacity: 0.5;
-    transition: opacity $transition-fast;
+    padding: 4px 20px;
+    opacity: 0.45;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    cursor: pointer;
+    position: relative;
+
+    &:hover {
+      opacity: 0.7;
+    }
 
     &--active {
       opacity: 1;
-      .tab-item__icon { transform: scale(1.1); }
+
+      .tab-item__icon { transform: scale(1.15); }
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: -1px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 24px;
+        height: 3px;
+        background: linear-gradient(90deg, #5a8abc, #7ab8d4);
+        border-radius: 0 0 3px 3px;
+      }
     }
 
     &__icon {
       font-size: 20px;
-      transition: transform $transition-fast;
+      transition: transform 0.2s ease;
     }
 
     &__label {
       font-size: 10px;
       color: $text-primary;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  // 桌面端更精致
+  @include respond-to('tablet') {
+    height: 60px;
+
+    .tab-item {
+      padding: 6px 28px;
+
+      &__icon { font-size: 22px; }
+      &__label { font-size: 11px; }
     }
   }
 }

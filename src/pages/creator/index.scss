@@ -2,26 +2,40 @@
 @import '../../styles/mixins';
 
 .creator {
-  padding: 0 20px;
-  min-height: 100vh;
+  padding: 50px 20px 100px;
+
+  @include respond-to('tablet') {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 60px 0 100px;
+  }
 
   &__header {
-    padding: 48px 4px 32px;
     text-align: center;
+    margin-bottom: $spacing-lg;
   }
 
   &__title {
     font-family: $font-hand;
-    font-size: 28px;
+    font-size: 24px;
+    font-weight: 700;
     color: $text-primary;
     display: block;
     margin-bottom: 8px;
+
+    @include respond-to('tablet') {
+      font-size: 28px;
+    }
   }
 
   &__subtitle {
     font-size: 13px;
     color: $text-secondary;
     display: block;
+
+    @include respond-to('tablet') {
+      font-size: 14px;
+    }
   }
 
   // Letter-paper card wrapping the textarea
@@ -30,11 +44,15 @@
     padding: 20px;
     margin-bottom: $spacing-lg;
     animation: fade-in-up 0.5s ease;
+
+    @include respond-to('tablet') {
+      padding: 24px;
+    }
   }
 
   &__textarea {
     width: 100%;
-    min-height: 200px;
+    min-height: 150px;
     font-family: $font-hand;
     font-size: 16px;
     line-height: 1.8;
@@ -44,6 +62,11 @@
     outline: none;
     resize: none;
     padding: 0;
+
+    @include respond-to('tablet') {
+      min-height: 200px;
+      font-size: 18px;
+    }
   }
 
   &__placeholder {
@@ -104,6 +127,10 @@
     animation: fade-in-up 0.5s ease;
     animation-delay: 0.1s;
     animation-fill-mode: both;
+
+    @include respond-to('tablet') {
+      padding: 16px 20px;
+    }
   }
 
   &__anonymous-info {
@@ -116,6 +143,10 @@
     color: $text-primary;
     display: block;
     margin-bottom: 2px;
+
+    @include respond-to('tablet') {
+      font-size: 16px;
+    }
   }
 
   &__anonymous-desc {
@@ -141,10 +172,26 @@
     animation: fade-in-up 0.5s ease;
     animation-delay: 0.2s;
     animation-fill-mode: both;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px $gold-glow;
+    }
 
     &--disabled {
       opacity: 0.5;
       box-shadow: none;
+      pointer-events: none;
+    }
+
+    @include respond-to('tablet') {
+      display: block;
+      max-width: 400px;
+      margin: 0 auto 40px;
+      height: 52px;
+      line-height: 52px;
+      font-size: 17px;
     }
   }
 }

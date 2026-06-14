@@ -5,6 +5,12 @@
   padding: 0 20px;
   min-height: 100vh;
 
+  @include respond-to('tablet') {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 0 0 100px;
+  }
+
   &__header {
     padding: 48px 4px 24px;
     text-align: center;
@@ -15,6 +21,10 @@
     font-size: 28px;
     color: $text-primary;
     display: block;
+
+    @include respond-to('tablet') {
+      font-size: 32px;
+    }
   }
 
   // Letter-card sections
@@ -23,6 +33,11 @@
     padding: 20px;
     margin-bottom: $spacing-md;
     animation: fade-in-up 0.4s ease;
+
+    @include respond-to('tablet') {
+      padding: 28px;
+      margin-bottom: $spacing-lg;
+    }
   }
 
   // ===== User card =====
@@ -35,12 +50,21 @@
     align-items: center;
     justify-content: center;
     margin: 0 auto 12px;
+
+    @include respond-to('tablet') {
+      width: 72px;
+      height: 72px;
+    }
   }
 
   &__avatar-text {
     font-size: 26px;
     font-weight: 600;
     color: #fff;
+
+    @include respond-to('tablet') {
+      font-size: 30px;
+    }
   }
 
   &__user-info {
@@ -59,6 +83,10 @@
     font-weight: 500;
     color: $text-primary;
     display: block;
+
+    @include respond-to('tablet') {
+      font-size: 20px;
+    }
   }
 
   &__edit-icon {
@@ -97,6 +125,12 @@
     background: #fff;
     text-align: center;
     margin: 0 auto 12px;
+
+    @include respond-to('tablet') {
+      max-width: 300px;
+      height: 44px;
+      font-size: 18px;
+    }
   }
 
   &__edit-actions {
@@ -115,6 +149,13 @@
     border-radius: $radius-md;
     padding: 0 16px;
     margin: 0;
+
+    @include respond-to('tablet') {
+      min-width: 100px;
+      height: 40px;
+      line-height: 40px;
+      font-size: 15px;
+    }
 
     &--save {
       background: linear-gradient(135deg, #7ab8d4, #6aa8c4);
@@ -135,6 +176,10 @@
     align-items: center;
     justify-content: center;
     padding: 16px 20px;
+
+    @include respond-to('tablet') {
+      padding: 20px 28px;
+    }
   }
 
   &__stat-item {
@@ -149,6 +194,10 @@
     font-size: 24px;
     font-weight: 600;
     color: $text-primary;
+
+    @include respond-to('tablet') {
+      font-size: 28px;
+    }
   }
 
   &__stat-label {
@@ -175,6 +224,11 @@
     color: $text-primary;
     display: block;
     margin-bottom: 12px;
+
+    @include respond-to('tablet') {
+      font-size: 16px;
+      margin-bottom: 16px;
+    }
   }
 
   &__ai-status-row {
@@ -221,6 +275,12 @@
     padding: 0 16px;
     margin: 0;
 
+    @include respond-to('tablet') {
+      height: 38px;
+      line-height: 38px;
+      font-size: 14px;
+    }
+
     &--change {
       background: rgba(122, 184, 212, 0.1);
       color: #7ab8d4;
@@ -245,6 +305,17 @@
     border: 1px dashed rgba(122, 184, 212, 0.3);
     border-radius: $radius-md;
     margin: 0;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: rgba(122, 184, 212, 0.15);
+    }
+
+    @include respond-to('tablet') {
+      height: 48px;
+      line-height: 48px;
+      font-size: 16px;
+    }
   }
 
   // ===== Key input form =====
@@ -255,6 +326,10 @@
 
   &__key-field {
     margin-bottom: 16px;
+
+    @include respond-to('tablet') {
+      margin-bottom: 20px;
+    }
   }
 
   &__key-label {
@@ -262,6 +337,10 @@
     color: $text-secondary;
     display: block;
     margin-bottom: 6px;
+
+    @include respond-to('tablet') {
+      font-size: 14px;
+    }
   }
 
   &__key-picker {
@@ -285,6 +364,12 @@
       color: $text-light;
       font-size: 12px;
     }
+
+    @include respond-to('tablet') {
+      height: 46px;
+      line-height: 46px;
+      font-size: 15px;
+    }
   }
 
   &__key-input {
@@ -296,12 +381,21 @@
     font-size: 14px;
     color: $text-primary;
     background: #fff;
+
+    @include respond-to('tablet') {
+      height: 46px;
+      font-size: 15px;
+    }
   }
 
   &__key-form-actions {
     display: flex;
     gap: 12px;
     margin-top: 8px;
+
+    @include respond-to('tablet') {
+      margin-top: 16px;
+    }
   }
 
   &__key-btn {
@@ -312,6 +406,12 @@
     font-size: 14px;
     border-radius: $radius-md;
     margin: 0;
+
+    @include respond-to('tablet') {
+      height: 44px;
+      line-height: 44px;
+      font-size: 15px;
+    }
 
     &--save {
       background: linear-gradient(135deg, #7ab8d4, #6aa8c4);
@@ -346,10 +446,25 @@
     border: 1px solid rgba(196, 122, 122, 0.3);
     border-radius: $radius-md;
     margin: 0;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: rgba(196, 122, 122, 0.05);
+    }
+
+    @include respond-to('tablet') {
+      height: 48px;
+      line-height: 48px;
+      font-size: 16px;
+    }
   }
 
   // ===== Spacer for tab bar =====
   &__spacer {
     height: 80px;
+
+    @include respond-to('tablet') {
+      height: 40px;
+    }
   }
 }
