@@ -114,6 +114,15 @@
     max-height: 35vh;
     overflow-y: auto;
     min-height: 0;
+    background: rgba(200, 180, 150, 0.06);
+    border-top: 1px solid $letter-border;
+    border-bottom: 1px solid $letter-border;
+
+    .app[data-mode='night'] & {
+      background: rgba(255, 255, 255, 0.04);
+      border-top-color: rgba(200, 180, 150, 0.08);
+      border-bottom-color: rgba(200, 180, 150, 0.08);
+    }
   }
 
   &__replies-loading,
